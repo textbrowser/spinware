@@ -19,6 +19,8 @@ FORMS           = UI/spinware.ui
 
 HEADERS		= Source/spinware.h
 
+RESOURCES       = Icons/icons.qrc
+
 SOURCES		= Source/spinware.cc \
                   Source/spinware_main.cc
 

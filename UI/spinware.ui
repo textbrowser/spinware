@@ -27,9 +27,9 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-194</y>
-         <width>764</width>
-         <height>1012</height>
+         <y>0</y>
+         <width>768</width>
+         <height>1177</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -140,15 +140,35 @@
              </item>
              <item>
               <widget class="QPushButton" name="list_abort">
-               <property name="text">
+               <property name="toolTip">
                 <string>Abort</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../Icons/icons.qrc">
+                 <normaloff>:/process-stop.png</normaloff>:/process-stop.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="list_list">
-               <property name="text">
+               <property name="toolTip">
                 <string>List</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../Icons/icons.qrc">
+                 <normaloff>:/view-list-details-symbolic.png</normaloff>:/view-list-details-symbolic.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -169,57 +189,137 @@
               <layout class="QVBoxLayout" name="verticalLayout_3">
                <item>
                 <widget class="QPushButton" name="backward">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Backward</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/go-previous.png</normaloff>:/go-previous.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="eject">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Eject</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/media-eject.png</normaloff>:/media-eject.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="end">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>End</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/go-last.png</normaloff>:/go-last.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="erase">
-                 <property name="text">
-                  <string>Erase</string>
+                 <property name="toolTip">
+                  <string>Erase!</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/list-remove.png</normaloff>:/list-remove.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="forward">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Forward</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/go-next.png</normaloff>:/go-next.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="load">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Load</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/document-open.png</normaloff>:/document-open.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="rewind">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Rewind</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/go-first.png</normaloff>:/go-first.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="status">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Status</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/info.png</normaloff>:/info.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -303,15 +403,35 @@
               <layout class="QVBoxLayout" name="verticalLayout_11">
                <item>
                 <widget class="QPushButton" name="abort_read">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Abort</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/process-stop.png</normaloff>:/process-stop.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="read">
-                 <property name="text">
-                  <string>Retrieve</string>
+                 <property name="toolTip">
+                  <string>Read</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/document-open.png</normaloff>:/document-open.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -425,15 +545,35 @@
               <layout class="QVBoxLayout" name="verticalLayout_9">
                <item>
                 <widget class="QPushButton" name="abort_write">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Abort</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/process-stop.png</normaloff>:/process-stop.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="write">
-                 <property name="text">
+                 <property name="toolTip">
                   <string>Write</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../Icons/icons.qrc">
+                   <normaloff>:/media-record.png</normaloff>:/media-record.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -472,7 +612,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -529,6 +669,8 @@
   <tabstop>write</tabstop>
   <tabstop>store</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../Icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

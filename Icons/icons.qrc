@@ -1,0 +1,15 @@
+<RCC>
+	<qresource pref="/">
+	<file>document-open.png</file>
+	<file>go-first.png</file>
+	<file>go-last.png</file>
+	<file>go-next.png</file>
+	<file>go-previous.png</file>
+	<file>info.png</file>
+	<file>list-remove.png</file>
+	<file>media-eject.png</file>
+	<file>media-record.png</file>
+	<file>process-stop.png</file>
+	<file>view-list-details-symbolic.png</file>
+	</qresource>
+</RCC>
