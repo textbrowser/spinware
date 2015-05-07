@@ -34,6 +34,7 @@
 int main(int argc, char *argv[])
 {
   QApplication qapplication(argc, argv);
+
   try
     {
       new spinware();
