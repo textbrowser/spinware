@@ -18,10 +18,26 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(triggered(void)),
 	  this,
 	  SLOT(slotQuit(void)));
+  connect(m_ui.backward,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
   connect(m_ui.device_select,
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectExecutable(void)));
+  connect(m_ui.eject,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
+  connect(m_ui.end,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
+  connect(m_ui.forward,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
   connect(m_ui.input_select,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -30,6 +46,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotList(void)));
+  connect(m_ui.load,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
   connect(m_ui.mt_select,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -38,6 +58,14 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectDirectory(void)));
+  connect(m_ui.rewind,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
+  connect(m_ui.status,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
   connect(m_ui.tar_select,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -225,6 +253,11 @@ void spinware::slotSelectExecutable(void)
 void spinware::slotStatus(const QString &widget_name,
 			  const QString &status)
 {
+  if(status.trimmed().isEmpty())
+    return;
+
   if(widget_name == "list")
-    m_ui.list->append(status);
+    m_ui.list->append(status.trimmed());
+  else if(widget_name == "operation")
+    m_ui.operation->append(status.trimmed());
 }

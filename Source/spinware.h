@@ -22,12 +22,16 @@ class spinware: public QMainWindow
   void list(const QString &device,
 	    const QString &mt,
 	    const QString &tar);
+  void operation(const QString &device,
+		 const QString &mt,
+		 const QString &command);
 
  private slots:
   void slotAbort(void);
   void slotFinished(const QString &widget_name);
   void slotHighlightPaths(void);
   void slotList(void);
+  void slotOperation(void);
   void slotQuit(void);
   void slotSelectDirectory(void);
   void slotSelectExecutable(void);
