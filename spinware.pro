@@ -6,11 +6,10 @@ QT		+=
 TEMPLATE	= app
 
 QMAKE_CLEAN	+= spinware
-QMAKE_CXXFLAGS_RELEASE -= -O2
-QMAKE_CXXFLAGS_RELEASE += -Os -Wall -Werror -Wextra \
+QMAKE_CXXFLAGS_RELEASE += -Wall -Werror -Wextra \
 			  -Wpointer-arith -Wstack-protector \
-			  -Wstrict-overflow=3 \
-			  -fPIE -fstack-protector-all -pie
+			  -Wstrict-overflow=5 \
+			  -fPIE -fstack-protector-all -fwrapv -pie
 QMAKE_EXTRA_TARGETS = purge
 
 INCLUDEPATH	+= Source
@@ -22,7 +21,8 @@ HEADERS		= Source/spinware.h
 RESOURCES       = Icons/icons.qrc
 
 SOURCES		= Source/spinware.cc \
-                  Source/spinware_main.cc
+                  Source/spinware_main.cc \
+                  Source/spinware_tasks.cc
 
 PROJECTNAME	= spinware
 TARGET		= spinware

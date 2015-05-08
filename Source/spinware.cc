@@ -10,20 +10,76 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(timeout(void)),
 	  this,
 	  SLOT(slotHighlightPaths(void)));
+  connect(m_ui.action_Quit,
+	  SIGNAL(triggered(void)),
+	  this,
+	  SLOT(slotQuit(void)));
   connect(m_ui.input_select,
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectDirectory(void)));
+  connect(m_ui.list_abort,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotAbortList(void)));
+  connect(m_ui.list_list,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotList(void)));
   connect(m_ui.output_select,
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectDirectory(void)));
+  connect(this,
+	  SIGNAL(finished(const QString &)),
+	  this,
+	  SLOT(slotFinished(const QString &)));
+  connect(this,
+	  SIGNAL(status(const QString &,
+			const QString &)),
+	  this,
+	  SLOT(slotStatus(const QString &,
+			  const QString &)));
   m_timer.start(2500);
+
+  /*
+  ** Prepare compress algorithms.
+  */
+
+  QStringList list;
+
+  list << "/bin/gzip"
+       << "/usr/local/gzip";
+
+  for(int i = 0; i < list.size(); i++)
+    {
+      QFileInfo fileInfo(list.at(i));
+
+      if(fileInfo.isExecutable() && fileInfo.isReadable())
+	m_ui.compression_algorithms->addItem(list.at(i));
+    }
+
+  if(m_ui.compression_algorithms->count() == 0)
+    m_ui.compression_algorithms->addItem("n/a");
+
+  m_ui.list_abort->setEnabled(false);
   show();
 }
 
 spinware::~spinware()
 {
+}
+
+void spinware::slotAbortList(void)
+{
+  emit status("list", "Aborting the list process...");
+  m_listFuture.cancel();
+}
+
+void spinware::slotFinished(const QString &widget_name)
+{
+  if(widget_name == "list")
+    m_ui.list_abort->setEnabled(false);
 }
 
 void spinware::slotHighlightPaths(void)
@@ -94,6 +150,11 @@ void spinware::slotHighlightPaths(void)
     }
 }
 
+void spinware::slotQuit(void)
+{
+  QApplication::instance()->quit();
+}
+
 void spinware::slotSelectDirectory(void)
 {
   QPushButton *pushButton = qobject_cast<QPushButton *> (sender());
@@ -122,4 +183,11 @@ void spinware::slotSelectDirectory(void)
 
 void spinware::slotSelectExecutable(void)
 {
+}
+
+void spinware::slotStatus(const QString &widget_name,
+			  const QString &status)
+{
+  if(widget_name == "list")
+    m_ui.list->append(status);
 }
