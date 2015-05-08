@@ -10,6 +10,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(timeout(void)),
 	  this,
 	  SLOT(slotHighlightPaths(void)));
+  connect(m_ui.abort,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotAbort(void)));
   connect(m_ui.action_Quit,
 	  SIGNAL(triggered(void)),
 	  this,
@@ -22,10 +26,6 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectDirectory(void)));
-  connect(m_ui.list_abort,
-	  SIGNAL(clicked(void)),
-	  this,
-	  SLOT(slotAbortList(void)));
   connect(m_ui.list_list,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -74,7 +74,6 @@ spinware::spinware(void):QMainWindow(0)
   if(m_ui.compression_algorithms->count() == 0)
     m_ui.compression_algorithms->addItem("n/a");
 
-  m_ui.list_abort->setEnabled(false);
   show();
 }
 
@@ -82,16 +81,14 @@ spinware::~spinware()
 {
 }
 
-void spinware::slotAbortList(void)
+void spinware::slotAbort(void)
 {
-  emit status("list", "Aborting the list process...");
-  m_listFuture.cancel();
+  m_future.cancel();
 }
 
 void spinware::slotFinished(const QString &widget_name)
 {
-  if(widget_name == "list")
-    m_ui.list_abort->setEnabled(false);
+  Q_UNUSED(widget_name);
 }
 
 void spinware::slotHighlightPaths(void)

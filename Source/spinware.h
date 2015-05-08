@@ -16,7 +16,7 @@ class spinware: public QMainWindow
   ~spinware();
 
  private:
-  QFuture<void> m_listFuture;
+  QFuture<void> m_future;
   QTimer m_timer;
   Ui_spinware m_ui;
   void list(const QString &device,
@@ -24,7 +24,7 @@ class spinware: public QMainWindow
 	    const QString &tar);
 
  private slots:
-  void slotAbortList(void);
+  void slotAbort(void);
   void slotFinished(const QString &widget_name);
   void slotHighlightPaths(void);
   void slotList(void);
