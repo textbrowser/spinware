@@ -14,6 +14,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(triggered(void)),
 	  this,
 	  SLOT(slotQuit(void)));
+  connect(m_ui.device_select,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotSelectExecutable(void)));
   connect(m_ui.input_select,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -26,10 +30,18 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotList(void)));
+  connect(m_ui.mt_select,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotSelectExecutable(void)));
   connect(m_ui.output_select,
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectDirectory(void)));
+  connect(m_ui.tar_select,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotSelectExecutable(void)));
   connect(this,
 	  SIGNAL(finished(const QString &)),
 	  this,
@@ -178,11 +190,39 @@ void spinware::slotSelectDirectory(void)
     }
 
   if(dialog.exec() == QDialog::Accepted)
-    m_ui.output->setText(dialog.selectedFiles().value(0));
+    {
+      if(m_ui.input_select == pushButton)
+	m_ui.input->setText(dialog.selectedFiles().value(0));
+      else
+	m_ui.output->setText(dialog.selectedFiles().value(0));
+    }
 }
 
 void spinware::slotSelectExecutable(void)
 {
+  QPushButton *pushButton = qobject_cast<QPushButton *> (sender());
+
+  if(!(m_ui.device_select == pushButton ||
+       m_ui.mt_select == pushButton ||
+       m_ui.tar_select == pushButton))
+    return;
+
+  QFileDialog dialog(this);
+
+  dialog.selectFile(m_ui.output->text());
+  dialog.setConfirmOverwrite(true);
+  dialog.setDirectory(QDir::homePath());
+  dialog.setFileMode(QFileDialog::ExistingFile);
+
+  if(dialog.exec() == QDialog::Accepted)
+    {
+      if(m_ui.device_select == pushButton)
+	m_ui.device->setText(dialog.selectedFiles().value(0));
+      else if(m_ui.mt_select == pushButton)
+	m_ui.mt->setText(dialog.selectedFiles().value(0));
+      else
+	m_ui.tar->setText(dialog.selectedFiles().value(0));
+    }
 }
 
 void spinware::slotStatus(const QString &widget_name,
