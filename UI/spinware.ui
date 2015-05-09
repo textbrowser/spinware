@@ -248,7 +248,7 @@
                <x>0</x>
                <y>0</y>
                <width>474</width>
-               <height>397</height>
+               <height>396</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -621,23 +621,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="store_current_position">
-              <property name="text">
-               <string>&amp;Current Position</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="store_end_position">
-              <property name="text">
-               <string>&amp;End</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
              <spacer name="horizontalSpacer_3">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -780,8 +763,6 @@
   <tabstop>input</tabstop>
   <tabstop>input_select</tabstop>
   <tabstop>compression_algorithms</tabstop>
-  <tabstop>store_current_position</tabstop>
-  <tabstop>store_end_position</tabstop>
   <tabstop>write</tabstop>
   <tabstop>store</tabstop>
  </tabstops>
