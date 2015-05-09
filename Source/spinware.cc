@@ -1,5 +1,6 @@
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QMessageBox>
 
 #include "spinware.h"
 
@@ -14,6 +15,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotAbort(void)));
+  connect(m_ui.action_About,
+	  SIGNAL(triggered(void)),
+	  this,
+	  SLOT(slotAbout(void)));
   connect(m_ui.action_Quit,
 	  SIGNAL(triggered(void)),
 	  this,
@@ -71,9 +76,9 @@ spinware::spinware(void):QMainWindow(0)
 	  this,
 	  SLOT(slotSelectExecutable(void)));
   connect(this,
-	  SIGNAL(finished(const QString &)),
+	  SIGNAL(finished(const QString &, const bool)),
 	  this,
-	  SLOT(slotFinished(const QString &)));
+	  SLOT(slotFinished(const QString &, const bool)));
   connect(this,
 	  SIGNAL(status(const QString &,
 			const QString &)),
@@ -114,9 +119,22 @@ void spinware::slotAbort(void)
   m_future.cancel();
 }
 
-void spinware::slotFinished(const QString &widget_name)
+void spinware::slotAbout(void)
 {
-  Q_UNUSED(widget_name);
+  QMessageBox::information
+    (this, tr("spinware: Information"),
+     "spinware: version 1.00.");
+}
+
+void spinware::slotFinished(const QString &widget_name, const bool ok)
+{
+  if(widget_name == "operation")
+    {
+      if(ok)
+	m_ui.operation->append("<font color='green'>[SUCCESS]</font>");
+      else
+	m_ui.operation->append("<font color='red'>[FAILURE]</font>");
+    }
 }
 
 void spinware::slotHighlightPaths(void)

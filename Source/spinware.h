@@ -28,7 +28,8 @@ class spinware: public QMainWindow
 
  private slots:
   void slotAbort(void);
-  void slotFinished(const QString &widget_name);
+  void slotAbout(void);
+  void slotFinished(const QString &widget_name, const bool ok);
   void slotHighlightPaths(void);
   void slotList(void);
   void slotOperation(void);
@@ -39,7 +40,7 @@ class spinware: public QMainWindow
 		  const QString &status);
 
  signals:
-  void finished(const QString &widget_name);
+  void finished(const QString &widget_name, const bool ok);
   void status(const QString &widget_name,
 	      const QString &status);
 };
