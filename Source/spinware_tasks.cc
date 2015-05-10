@@ -245,23 +245,26 @@ void spinware::slotOperation(void)
 
   if(command == "erase")
     {
-      QMessageBox mb(this);
+      QStringList list;
 
-      mb.setIcon(QMessageBox::Question);
-      mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-      mb.setText(tr("Are you sure that you wish to erase %1? "
-		    "This action may be irreversible!").arg(device));
-      mb.setWindowTitle(tr("spinware: Confirmation"));
-      mb.setWindowModality(Qt::WindowModal);
+      list << tr("Are you sure that you wish to erase %1? "
+		 "This action may be irreversible!").arg(device)
+	   << tr("Are you absolutely sure that you wish to "
+		 "erase %1?").arg(device);
 
-      if(mb.exec() != QMessageBox::Yes)
-	return;
+      for(int i = 0; i < list.size(); i++)
+	{
+	  QMessageBox mb(this);
 
-      mb.setText(tr("Are you absolutely sure that you wish to "
-		    "erase %1?").arg(device));
+	  mb.setIcon(QMessageBox::Question);
+	  mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+	  mb.setText(list.at(i));
+	  mb.setWindowTitle(tr("spinware: Confirmation"));
+	  mb.setWindowModality(Qt::WindowModal);
 
-      if(mb.exec() != QMessageBox::Yes)
-	return;
+	  if(mb.exec() != QMessageBox::Yes)
+	    return;
+	}
     }
 
   m_pid = 0;
@@ -297,7 +300,10 @@ void spinware::write(const QString &device,
 
   emit status("write", QString("Writing %1 into %2...").arg(input).
 	      arg(device));
-  process.start(tar, QStringList() << "-cvzf" << device << input);
+  process.start
+    (tar, QStringList() << "-C" << QFileInfo(input).path()
+                        << "-cvzf" << device
+                        << QFileInfo(input).fileName());
   m_pid = process.pid();
   process.waitForFinished(-1);
 
