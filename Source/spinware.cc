@@ -311,7 +311,11 @@ void spinware::slotSelectDirectory(void)
 
   QFileDialog dialog(this);
 
-  dialog.selectFile(m_ui.output->text());
+  if(m_ui.input_select == pushButton)
+    dialog.selectFile(m_ui.input->text());
+  else
+    dialog.selectFile(m_ui.output->text());
+
   dialog.setConfirmOverwrite(true);
   dialog.setDirectory(QDir::homePath());
 
@@ -343,9 +347,14 @@ void spinware::slotSelectExecutable(void)
 
   QFileDialog dialog(this);
 
-  dialog.selectFile(m_ui.output->text());
+  if(m_ui.device_select == pushButton)
+    dialog.selectFile(m_ui.device->text());
+  else if(m_ui.mt_select == pushButton)
+    dialog.selectFile(m_ui.mt->text());
+  else
+    dialog.selectFile(m_ui.tar->text());
+
   dialog.setConfirmOverwrite(true);
-  dialog.setDirectory(QDir::homePath());
   dialog.setFileMode(QFileDialog::ExistingFile);
 
   if(dialog.exec() == QDialog::Accepted)
