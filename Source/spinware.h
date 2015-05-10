@@ -4,6 +4,10 @@
 #include <QFuture>
 #include <QMainWindow>
 #include <QTimer>
+#if QT_VERSION >= 0x050000
+#include <QtConcurrent>
+#endif
+#include <QtCore>
 
 #include "ui_spinware.h"
 
@@ -25,6 +29,9 @@ class spinware: public QMainWindow
   void operation(const QString &device,
 		 const QString &mt,
 		 const QString &command);
+  void read(const QString &device,
+	    const QString &output,
+	    const QString &tar);
 
  private slots:
   void slotAbort(void);
@@ -34,6 +41,7 @@ class spinware: public QMainWindow
   void slotList(void);
   void slotOperation(void);
   void slotQuit(void);
+  void slotRead(void);
   void slotSelectDirectory(void);
   void slotSelectExecutable(void);
   void slotStatus(const QString &widget_name,

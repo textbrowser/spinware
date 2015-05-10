@@ -1,9 +1,5 @@
 #include <QMessageBox>
 #include <QProcess>
-#if QT_VERSION >= 0x050000
-#include <QtConcurrent>
-#endif
-#include <QtCore>
 
 #include "spinware.h"
 
@@ -11,67 +7,50 @@ void spinware::list(const QString &device,
 		    const QString &mt,
 		    const QString &tar)
 {
+  QProcess process;
   bool ok = true;
 
   emit status("list", QString("Loading %1...").arg(device));
+  process.start(mt, QStringList() << "-f" << device << "load");
+  process.waitForFinished(-1);
 
-  {
-    QProcess process;
-
-    process.start(mt, QStringList() << "-f" << device << "load");
-    process.waitForFinished(-1);
-
-    if(process.exitCode() != 0)
-      {
-	ok = false;
-	goto done_label;
-      }
-  }
+  if(process.exitCode() != 0)
+    {
+      ok = false;
+      goto done_label;
+    }
 
   emit status("list", QString("Rewinding %1...").arg(device));
+  process.start(mt, QStringList() << "-f" << device << "rewind");
+  process.waitForFinished(-1);
 
-  {
-    QProcess process;
-
-    process.start(mt, QStringList() << "-f" << device << "rewind");
-    process.waitForFinished(-1);
-
-    if(process.exitCode() != 0)
-      {
-	ok = false;
-	goto done_label;
-      }
-  }
+  if(process.exitCode() != 0)
+    {
+      ok = false;
+      goto done_label;
+    }
 
   do
     {
       if(m_future.isCanceled())
 	break;
 
-      {
-	QProcess process;
+      process.start(tar, QStringList() << "-tvzf" << device);
+      process.waitForFinished(-1);
 
-	process.start(tar, QStringList() << "-tvzf" << device);
-	process.waitForFinished(-1);
+      if(process.exitCode() == 0)
+	emit status("list", process.readAllStandardOutput());
+      else
+	break;
 
-	if(process.exitCode() == 0)
-	  emit status("list", process.readAllStandardOutput());
-	else
-	  break;
-      }
+      process.start(mt, QStringList() << "-f" << device << "status");
+      process.waitForFinished(-1);
 
-      {
-	QProcess process;
-
-	process.start(mt, QStringList() << "-f" << device << "status");
-	process.waitForFinished(-1);
-
-	if(process.exitCode() == 0)
-	  {
-	    if(process.readAllStandardOutput().trimmed().contains("EOD"))
-	      break;
-	  }
-      }
+      if(process.exitCode() == 0)
+	{
+	  if(process.readAllStandardOutput().trimmed().contains("EOD"))
+	    break;
+	}
     }
   while(true);
 
@@ -85,14 +64,47 @@ void spinware::operation(const QString &device,
 {
   QProcess process;
 
-  emit status("operation", QString("Executing %1...").arg(command));
-
   if(command.contains(" "))
-    process.start(command);
+    {
+      emit status("operation", QString("Executing %1...").arg(command));
+      process.start(command);
+    }
+  else if(command == "bsfm")
+    {
+      emit status("operation", "Executing status...");
+      process.start(mt, QStringList() << "-f" << device << "status");
+      process.waitForFinished(-1);
+
+      if(process.exitCode() != 0)
+	goto done_label;
+      else
+	emit finished("operation", true);
+
+      QString str(process.readAllStandardOutput().toLower());
+
+      if(str.contains("file number=0"))
+	return;
+      else if(str.contains("file number=1"))
+	{
+	  emit status("operation", "Executing rewind...");
+	  process.start(mt, QStringList() << "-f" << device << "rewind");
+	}
+      else
+	{
+	  emit status("operation", QString("Executing %1...").arg(command));
+	  process.start
+	    (mt, QStringList() << "-f" << device << command << "2");
+	}
+    }
   else
-    process.start(mt, QStringList() << "-f" << device << command);
+    {
+      emit status("operation", QString("Executing %1...").arg(command));
+      process.start(mt, QStringList() << "-f" << device << command);
+    }
 
   process.waitForFinished(-1);
+
+ done_label:
 
   if(process.exitCode() == 0)
     emit status("operation", process.readAllStandardOutput());
@@ -100,6 +112,20 @@ void spinware::operation(const QString &device,
     emit status("operation", process.readAllStandardError());
 
   emit finished("operation", process.exitCode() == 0);
+}
+
+void spinware::read(const QString &device,
+		    const QString &output,
+		    const QString &tar)
+{
+  QProcess process;
+
+  emit status("read", QString("Retrieving %1 into %2...").arg(device).
+	      arg(output));
+  process.start
+    (tar, QStringList() << "-C" << output << "-xvzf" << device);
+  process.waitForFinished(-1);
+  emit finished("read", process.exitCode() == 0);
 }
 
 void spinware::slotList(void)
@@ -114,26 +140,26 @@ void spinware::slotList(void)
   QString tar(m_ui.tar->text());
 
   if(!fileInfo.isReadable())
-    error = tr("Device is not readable.");
-
-  if(!error.isEmpty())
-    goto done_label;
+    {
+      error = tr("Device is not readable.");
+      goto done_label;
+    }
 
   fileInfo.setFile(mt);
 
   if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
-    error = tr("MT must be a readable executable.");
-
-  if(!error.isEmpty())
-    goto done_label;
+    {
+      error = tr("MT must be a readable executable.");
+      goto done_label;
+    }
 
   fileInfo.setFile(tar);
 
   if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
-    error = tr("TAR must be a readable executable.");
-
-  if(!error.isEmpty())
-    goto done_label;
+    {
+      error = tr("TAR must be a readable executable.");
+      goto done_label;
+    }
 
   m_future = QtConcurrent::run(this,
 			       &spinware::list,
@@ -157,7 +183,7 @@ void spinware::slotOperation(void)
   QString command("");
 
   if(m_ui.backward == pushButton)
-    command = "bsf";
+    command = "bsfm";
   else if(m_ui.eject == pushButton)
     command = "eject";
   else if(m_ui.end == pushButton)
@@ -179,18 +205,18 @@ void spinware::slotOperation(void)
   QString mt(m_ui.mt->text());
 
   if(!fileInfo.isReadable())
-    error = tr("Device is not readable.");
-
-  if(!error.isEmpty())
-    goto done_label;
+    {
+      error = tr("Device is not readable.");
+      goto done_label;
+    }
 
   fileInfo.setFile(mt);
 
   if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
-    error = tr("MT must be a readable executable.");
-
-  if(!error.isEmpty())
-    goto done_label;
+    {
+      error = tr("MT must be a readable executable.");
+      goto done_label;
+    }
 
   m_future = QtConcurrent::run(this,
 			       &spinware::operation,

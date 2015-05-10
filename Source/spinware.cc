@@ -67,6 +67,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectDirectory(void)));
+  connect(m_ui.read,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotRead(void)));
   connect(m_ui.rewind,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -132,12 +136,19 @@ void spinware::slotAbout(void)
 
 void spinware::slotFinished(const QString &widget_name, const bool ok)
 {
+  QTextEdit *widget = 0;
+
   if(widget_name == "operation")
+    widget = m_ui.operation;
+  else if(widget_name == "read")
+    widget = m_ui.retrieve;
+
+  if(widget)
     {
       if(ok)
-	m_ui.operation->append("<font color='green'>[SUCCESS]</font>");
+	widget->append("<font color='green'>[SUCCESS]</font>");
       else
-	m_ui.operation->append("<font color='red'>[FAILURE]</font>");
+	widget->append("<font color='red'>[FAILURE]</font>");
     }
 }
 
@@ -214,6 +225,52 @@ void spinware::slotQuit(void)
   QApplication::instance()->quit();
 }
 
+void spinware::slotRead(void)
+{
+  if(!m_future.isFinished())
+    return;
+
+  QFileInfo fileInfo(m_ui.device->text());
+  QString device(m_ui.device->text());
+  QString error("");
+  QString output(m_ui.output->text());
+  QString tar(m_ui.tar->text());
+
+  if(!fileInfo.isReadable())
+    {
+      error = tr("Device is not readable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(output);
+
+  if(!(fileInfo.isExecutable() && fileInfo.isWritable()))
+    {
+      error = tr("Output must be executable and writable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(tar);
+
+  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
+    {
+      error = tr("TAR must be a readable executable.");
+      goto done_label;
+    }
+
+  m_future = QtConcurrent::run(this,
+			       &spinware::read,
+			       device,
+			       output,
+			       tar);
+
+ done_label:
+
+  if(!error.isEmpty())
+    QMessageBox::critical(this, tr("%1: Error").
+			  arg("spinware"), error);
+}
+
 void spinware::slotSelectDirectory(void)
 {
   QPushButton *pushButton = qobject_cast<QPushButton *> (sender());
@@ -282,4 +339,6 @@ void spinware::slotStatus(const QString &widget_name,
     m_ui.list->append(status.trimmed());
   else if(widget_name == "operation")
     m_ui.operation->append(status.trimmed());
+  else if(widget_name == "read")
+    m_ui.retrieve->append(status.trimmed());
 }
