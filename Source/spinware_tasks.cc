@@ -9,6 +9,7 @@ void spinware::list(const QString &device,
 {
   QProcess process;
   bool ok = true;
+  quint64 number = 0;
 
   emit status("list", QString("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
@@ -48,7 +49,12 @@ void spinware::list(const QString &device,
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
-	emit status("list", process.readAllStandardOutput());
+	{
+	  number += 1;
+	  emit coloredStatus("list", QString("***** File Number %1 *****").
+			     arg(number));
+	  emit status("list", process.readAllStandardOutput());
+	}
       else
 	break;
 
@@ -242,11 +248,11 @@ void spinware::slotOperation(void)
       QMessageBox mb(this);
 
       mb.setIcon(QMessageBox::Question);
-      mb.setWindowTitle(tr("spinware: Confirmation"));
-      mb.setWindowModality(Qt::WindowModal);
       mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
       mb.setText(tr("Are you sure that you wish to erase %1? "
 		    "This action may be irreversible!").arg(device));
+      mb.setWindowTitle(tr("spinware: Confirmation"));
+      mb.setWindowModality(Qt::WindowModal);
 
       if(mb.exec() != QMessageBox::Yes)
 	return;
@@ -270,4 +276,34 @@ void spinware::slotOperation(void)
 
   if(!error.isEmpty())
     QMessageBox::critical(this, tr("spinware: Error"), error);
+}
+
+void spinware::write(const QString &device,
+		     const QString &input,
+		     const QString &mt,
+		     const QString &tar)
+{
+  QProcess process;
+
+  emit status("write", "Executing eod...");
+  process.start(mt, QStringList() << "-f" << device << "eod");
+  m_pid = process.pid();
+  process.waitForFinished(-1);
+
+  if(process.exitCode() != 0)
+    goto done_label;
+  else
+    emit finished("write", true);
+
+  emit status("write", QString("Writing %1 into %2...").arg(input).
+	      arg(device));
+  process.start(tar, QStringList() << "-cvzf" << device << input);
+  m_pid = process.pid();
+  process.waitForFinished(-1);
+
+  if(process.exitCode() == 0)
+    emit status("write", process.readAllStandardOutput());
+
+ done_label:
+  emit finished("write", process.exitCode() == 0);
 }

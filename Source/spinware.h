@@ -1,6 +1,7 @@
 #ifndef _spinware_h_
 #define _spinware_h_
 
+#include <QColor>
 #include <QFuture>
 #include <QMainWindow>
 #include <QTimer>
@@ -25,6 +26,9 @@ class spinware: public QMainWindow
   QTimer m_timer;
   Ui_spinware m_ui;
   qint64 m_pid;
+  void appendStatus(const QColor &color,
+		    const QString &operation,
+		    const QString &status);
   void list(const QString &device,
 	    const QString &mt,
 	    const QString &tar);
@@ -34,11 +38,17 @@ class spinware: public QMainWindow
   void read(const QString &device,
 	    const QString &output,
 	    const QString &tar);
+  void write(const QString &device,
+	     const QString &input,
+	     const QString &mt,
+	     const QString &tar);
 
  private slots:
   void slotAbort(void);
   void slotAbout(void);
-  void slotFinished(const QString &widget_name, const bool ok);
+  void slotColoredStatus(const QString &operation,
+			 const QString &status);
+  void slotFinished(const QString &operation, const bool ok);
   void slotFutureFinished(void);
   void slotHighlightPaths(void);
   void slotList(void);
@@ -47,12 +57,15 @@ class spinware: public QMainWindow
   void slotRead(void);
   void slotSelectDirectory(void);
   void slotSelectExecutable(void);
-  void slotStatus(const QString &widget_name,
+  void slotStatus(const QString &operation,
 		  const QString &status);
+  void slotStore(void);
 
  signals:
-  void finished(const QString &widget_name, const bool ok);
-  void status(const QString &widget_name,
+  void coloredStatus(const QString &operation,
+		     const QString &status);
+  void finished(const QString &operation, const bool ok);
+  void status(const QString &operation,
 	      const QString &status);
 };
 

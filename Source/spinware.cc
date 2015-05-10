@@ -99,6 +99,14 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectExecutable(void)));
+  connect(m_ui.write,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotStore(void)));
+  connect(this,
+	  SIGNAL(coloredStatus(const QString &, const QString &)),
+	  this,
+	  SLOT(slotColoredStatus(const QString &, const QString &)));
   connect(this,
 	  SIGNAL(finished(const QString &, const bool)),
 	  this,
@@ -140,6 +148,35 @@ spinware::~spinware()
 {
 }
 
+void spinware::appendStatus(const QColor &color,
+			    const QString &operation,
+			    const QString &status)
+{
+  if(status.trimmed().isEmpty())
+    return;
+
+  QTextEdit *widget = 0;
+
+  if(operation == "list")
+    widget = m_ui.list;
+  else if(operation == "operation")
+    widget = m_ui.operation;
+  else if(operation == "read")
+    widget = m_ui.retrieve;
+  else if(operation == "write")
+    widget = m_ui.store;
+
+  if(!widget)
+    return;
+
+  if(color.isValid())
+    widget->append
+      (QString("<font color='%1'>%2</font>").arg(color.name()).
+       arg(status.trimmed()));
+  else
+    widget->append(status.trimmed());
+}
+
 void spinware::slotAbort(void)
 {
   if(m_future.isRunning())
@@ -156,16 +193,27 @@ void spinware::slotAbout(void)
      "spinware: version 1.00.");
 }
 
-void spinware::slotFinished(const QString &widget_name, const bool ok)
+void spinware::slotColoredStatus(const QString &operation,
+				 const QString &status)
+{
+  appendStatus(QColor(111, 0, 255), operation, status);
+}
+
+void spinware::slotFinished(const QString &operation, const bool ok)
 {
   QTextEdit *widget = 0;
 
-  if(widget_name == "list")
+  if(operation == "list")
     widget = m_ui.list;
-  else if(widget_name == "operation")
+  else if(operation == "operation")
     widget = m_ui.operation;
-  else if(widget_name == "read")
+  else if(operation == "read")
     widget = m_ui.retrieve;
+  else if(operation == "write")
+    {
+      m_ui.input->clear();
+      widget = m_ui.store;
+    }
 
   if(widget)
     {
@@ -312,15 +360,18 @@ void spinware::slotSelectDirectory(void)
   QFileDialog dialog(this);
 
   if(m_ui.input_select == pushButton)
-    dialog.selectFile(m_ui.input->text());
+    {
+      dialog.selectFile(m_ui.input->text());
+      dialog.setDirectory(QDir::homePath());
+    }
   else
-    dialog.selectFile(m_ui.output->text());
-
-  dialog.setConfirmOverwrite(true);
-  dialog.setDirectory(QDir::homePath());
+    {
+      dialog.selectFile(m_ui.output->text());
+      dialog.setConfirmOverwrite(true);
+    }
 
   if(m_ui.input_select == pushButton)
-    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setFileMode(QFileDialog::Directory);
   else
     {
       dialog.setFileMode(QFileDialog::Directory);
@@ -368,16 +419,65 @@ void spinware::slotSelectExecutable(void)
     }
 }
 
-void spinware::slotStatus(const QString &widget_name,
+void spinware::slotStatus(const QString &operation,
 			  const QString &status)
 {
-  if(status.trimmed().isEmpty())
+  appendStatus(QColor(), operation, status);
+}
+
+void spinware::slotStore(void)
+{
+  if(!m_future.isFinished())
     return;
 
-  if(widget_name == "list")
-    m_ui.list->append(status.trimmed());
-  else if(widget_name == "operation")
-    m_ui.operation->append(status.trimmed());
-  else if(widget_name == "read")
-    m_ui.retrieve->append(status.trimmed());
+  QFileInfo fileInfo(m_ui.device->text());
+  QString device(m_ui.device->text());
+  QString error("");
+  QString input(m_ui.input->text());
+  QString mt(m_ui.mt->text());
+  QString tar(m_ui.tar->text());
+
+  if(!fileInfo.isWritable())
+    {
+      error = tr("Device is not writable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(input);
+
+  if(!fileInfo.isReadable())
+    {
+      error = tr("Input must be readable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(mt);
+
+  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
+    {
+      error = tr("MT must be a readable executable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(tar);
+
+  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
+    {
+      error = tr("TAR must be a readable executable.");
+      goto done_label;
+    }
+
+  m_pid = 0;
+  m_future = QtConcurrent::run(this,
+			       &spinware::write,
+			       device,
+			       input,
+			       mt,
+			       tar);
+  m_futureWatcher.setFuture(m_future);
+
+ done_label:
+
+  if(!error.isEmpty())
+    QMessageBox::critical(this, tr("spinware: Error"), error);
 }
