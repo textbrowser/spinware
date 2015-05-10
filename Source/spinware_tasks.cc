@@ -36,6 +36,8 @@ void spinware::list(const QString &device,
   else
     emit finished("list", true);
 
+  emit status("list", QString("Listing %1...").arg(device));
+
   do
     {
       if(m_future.isCanceled())
@@ -186,8 +188,7 @@ void spinware::slotList(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("%1: Error").
-			  arg("spinware"), error);
+    QMessageBox::critical(this, tr("spinware: Error"), error);
 }
 
 void spinware::slotOperation(void)
@@ -204,6 +205,8 @@ void spinware::slotOperation(void)
     command = "eject";
   else if(m_ui.end == pushButton)
     command = "eod";
+  else if(m_ui.erase == pushButton)
+    command = "erase";
   else if(m_ui.forward == pushButton)
     command = "fsf";
   else if(m_ui.load == pushButton)
@@ -234,6 +237,27 @@ void spinware::slotOperation(void)
       goto done_label;
     }
 
+  if(command == "erase")
+    {
+      QMessageBox mb(this);
+
+      mb.setIcon(QMessageBox::Question);
+      mb.setWindowTitle(tr("spinware: Confirmation"));
+      mb.setWindowModality(Qt::WindowModal);
+      mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+      mb.setText(tr("Are you sure that you wish to erase %1? "
+		    "This action may be irreversible!").arg(device));
+
+      if(mb.exec() != QMessageBox::Yes)
+	return;
+
+      mb.setText(tr("Are you absolutely sure that you wish to "
+		    "erase %1?").arg(device));
+
+      if(mb.exec() != QMessageBox::Yes)
+	return;
+    }
+
   m_pid = 0;
   m_future = QtConcurrent::run(this,
 			       &spinware::operation,
@@ -245,6 +269,5 @@ void spinware::slotOperation(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("%1: Error").
-			  arg("spinware"), error);
+    QMessageBox::critical(this, tr("spinware: Error"), error);
 }

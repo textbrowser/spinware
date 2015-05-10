@@ -55,6 +55,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotOperation(void)));
+  connect(m_ui.erase,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotOperation(void)));
   connect(m_ui.forward,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -294,8 +298,7 @@ void spinware::slotRead(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("%1: Error").
-			  arg("spinware"), error);
+    QMessageBox::critical(this, tr("spinware: Error"), error);
 }
 
 void spinware::slotSelectDirectory(void)
