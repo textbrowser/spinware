@@ -1,3 +1,10 @@
+extern "C"
+{
+#include <signal.h>
+#include <sys/types.h>
+}
+
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -7,6 +14,11 @@
 spinware::spinware(void):QMainWindow(0)
 {
   m_ui.setupUi(this);
+  m_pid = 0;
+  connect(&m_futureWatcher,
+	  SIGNAL(finished(void)),
+	  this,
+	  SLOT(slotFutureFinished(void)));
   connect(&m_timer,
 	  SIGNAL(timeout(void)),
 	  this,
@@ -115,6 +127,8 @@ spinware::spinware(void):QMainWindow(0)
   if(m_ui.compression_algorithms->count() == 0)
     m_ui.compression_algorithms->addItem("n/a");
 
+  m_ui.output->setText
+    (QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
   show();
 }
 
@@ -124,6 +138,10 @@ spinware::~spinware()
 
 void spinware::slotAbort(void)
 {
+  if(m_future.isRunning())
+    if(m_pid > 0)
+      ::kill(static_cast<pid_t> (m_pid), SIGTERM);
+
   m_future.cancel();
 }
 
@@ -138,7 +156,9 @@ void spinware::slotFinished(const QString &widget_name, const bool ok)
 {
   QTextEdit *widget = 0;
 
-  if(widget_name == "operation")
+  if(widget_name == "list")
+    widget = m_ui.list;
+  else if(widget_name == "operation")
     widget = m_ui.operation;
   else if(widget_name == "read")
     widget = m_ui.retrieve;
@@ -150,6 +170,11 @@ void spinware::slotFinished(const QString &widget_name, const bool ok)
       else
 	widget->append("<font color='red'>[FAILURE]</font>");
     }
+}
+
+void spinware::slotFutureFinished(void)
+{
+  m_pid = 0;
 }
 
 void spinware::slotHighlightPaths(void)
@@ -258,11 +283,13 @@ void spinware::slotRead(void)
       goto done_label;
     }
 
+  m_pid = 0;
   m_future = QtConcurrent::run(this,
 			       &spinware::read,
 			       device,
 			       output,
 			       tar);
+  m_futureWatcher.setFuture(m_future);
 
  done_label:
 

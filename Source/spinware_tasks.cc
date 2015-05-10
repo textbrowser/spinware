@@ -12,6 +12,7 @@ void spinware::list(const QString &device,
 
   emit status("list", QString("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
+  m_pid = process.pid();
   process.waitForFinished(-1);
 
   if(process.exitCode() != 0)
@@ -19,9 +20,12 @@ void spinware::list(const QString &device,
       ok = false;
       goto done_label;
     }
+  else
+    emit finished("list", true);
 
   emit status("list", QString("Rewinding %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "rewind");
+  m_pid = process.pid();
   process.waitForFinished(-1);
 
   if(process.exitCode() != 0)
@@ -29,6 +33,8 @@ void spinware::list(const QString &device,
       ok = false;
       goto done_label;
     }
+  else
+    emit finished("list", true);
 
   do
     {
@@ -36,6 +42,7 @@ void spinware::list(const QString &device,
 	break;
 
       process.start(tar, QStringList() << "-tvzf" << device);
+      m_pid = process.pid();
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
@@ -44,6 +51,7 @@ void spinware::list(const QString &device,
 	break;
 
       process.start(mt, QStringList() << "-f" << device << "status");
+      m_pid = process.pid();
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
@@ -68,11 +76,13 @@ void spinware::operation(const QString &device,
     {
       emit status("operation", QString("Executing %1...").arg(command));
       process.start(command);
+      m_pid = process.pid();
     }
   else if(command == "bsfm")
     {
       emit status("operation", "Executing status...");
       process.start(mt, QStringList() << "-f" << device << "status");
+      m_pid = process.pid();
       process.waitForFinished(-1);
 
       if(process.exitCode() != 0)
@@ -88,18 +98,21 @@ void spinware::operation(const QString &device,
 	{
 	  emit status("operation", "Executing rewind...");
 	  process.start(mt, QStringList() << "-f" << device << "rewind");
+	  m_pid = process.pid();
 	}
       else
 	{
 	  emit status("operation", QString("Executing %1...").arg(command));
 	  process.start
 	    (mt, QStringList() << "-f" << device << command << "2");
+	  m_pid = process.pid();
 	}
     }
   else
     {
       emit status("operation", QString("Executing %1...").arg(command));
       process.start(mt, QStringList() << "-f" << device << command);
+      m_pid = process.pid();
     }
 
   process.waitForFinished(-1);
@@ -124,6 +137,7 @@ void spinware::read(const QString &device,
 	      arg(output));
   process.start
     (tar, QStringList() << "-C" << output << "-xvzf" << device);
+  m_pid = process.pid();
   process.waitForFinished(-1);
   emit finished("read", process.exitCode() == 0);
 }
@@ -161,11 +175,13 @@ void spinware::slotList(void)
       goto done_label;
     }
 
+  m_pid = 0;
   m_future = QtConcurrent::run(this,
 			       &spinware::list,
 			       device,
 			       mt,
 			       tar);
+  m_futureWatcher.setFuture(m_future);
 
  done_label:
 
@@ -218,11 +234,13 @@ void spinware::slotOperation(void)
       goto done_label;
     }
 
+  m_pid = 0;
   m_future = QtConcurrent::run(this,
 			       &spinware::operation,
 			       device,
 			       mt,
 			       command);
+  m_futureWatcher.setFuture(m_future);
 
  done_label:
 
