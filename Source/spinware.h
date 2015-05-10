@@ -36,8 +36,10 @@ class spinware: public QMainWindow
 		 const QString &mt,
 		 const QString &command);
   void read(const QString &device,
+	    const QString &mt,
 	    const QString &output,
-	    const QString &tar);
+	    const QString &tar,
+	    const int number);
   void write(const QString &device,
 	     const QString &input,
 	     const QString &mt,

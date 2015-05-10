@@ -141,6 +141,7 @@ spinware::spinware(void):QMainWindow(0)
 
   m_ui.output->setText
     (QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+  setWindowIcon(QIcon(":/spinware.png"));
   show();
 }
 
@@ -310,12 +311,22 @@ void spinware::slotRead(void)
   QFileInfo fileInfo(m_ui.device->text());
   QString device(m_ui.device->text());
   QString error("");
+  QString mt(m_ui.mt->text());
   QString output(m_ui.output->text());
   QString tar(m_ui.tar->text());
+  int number = m_ui.number->value();
 
   if(!fileInfo.isReadable())
     {
       error = tr("Device is not readable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(mt);
+
+  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
+    {
+      error = tr("MT must be a readable executable.");
       goto done_label;
     }
 
@@ -339,8 +350,10 @@ void spinware::slotRead(void)
   m_future = QtConcurrent::run(this,
 			       &spinware::read,
 			       device,
+			       mt,
 			       output,
-			       tar);
+			       tar,
+			       number);
   m_futureWatcher.setFuture(m_future);
 
  done_label:
