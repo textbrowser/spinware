@@ -255,6 +255,13 @@ void spinware::slotOperation(void)
   else
     command = m_ui.operations_custom_command->text().trimmed();
 
+  if(command.isEmpty())
+    {
+      QMessageBox::critical(this, tr("spinware: Error"),
+			    tr("Please specify a command."));
+      return;
+    }
+
   QFileInfo fileInfo(m_ui.device->text());
   QString device(m_ui.device->text());
   QString error("");
@@ -296,6 +303,20 @@ void spinware::slotOperation(void)
 	  if(mb.exec() != QMessageBox::Yes)
 	    return;
 	}
+    }
+  else if(!pushButton)
+    {
+      QMessageBox mb(this);
+
+      mb.setIcon(QMessageBox::Question);
+      mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+      mb.setText(tr("Are you sure that you wish to execute "
+		    "the specified command?"));
+      mb.setWindowTitle(tr("spinware: Confirmation"));
+      mb.setWindowModality(Qt::WindowModal);
+
+      if(mb.exec() != QMessageBox::Yes)
+	return;
     }
 
   m_pid = 0;
