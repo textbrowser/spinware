@@ -218,7 +218,8 @@ void spinware::slotAbout(void)
 {
   QMessageBox::information
     (this, tr("spinware: Information"),
-     "spinware: version 1.00.");
+     QString("Qt version %1.\n"
+	     "spinware: version 1.00.").arg(QT_VERSION_STR));
 }
 
 void spinware::slotColoredStatus(const QString &operation,
