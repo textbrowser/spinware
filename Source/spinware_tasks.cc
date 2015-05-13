@@ -363,7 +363,8 @@ void spinware::slotOperation(void)
 void spinware::write(const QString &device,
 		     const QString &input,
 		     const QString &mt,
-		     const QString &tar)
+		     const QString &tar,
+		     const bool individual)
 {
   QProcess process;
 
@@ -380,17 +381,56 @@ void spinware::write(const QString &device,
   else
     emit finished("write", true);
 
-  emit status("write", QString("Writing %1 into %2...").arg(input).
-	      arg(device));
-  process.start
-    (tar, QStringList() << "-C" << QFileInfo(input).path()
-                        << "-cvzf" << device
-                        << QFileInfo(input).fileName());
-  m_pid = process.pid();
-  process.waitForFinished(-1);
+  if(QFileInfo(input).isDir() && individual)
+    {
+      QDir dir(input);
+      QStringList list(dir.entryList(QDir::AllDirs |
+				     QDir::Files |
+				     QDir::NoDotAndDotDot));
 
-  if(process.exitCode() == 0)
-    emit status("write", process.readAllStandardOutput());
+      process.setWorkingDirectory(input);
+
+      while(!list.isEmpty())
+	{
+	  if(m_future.isCanceled())
+	    break;
+
+	  QString str(list.takeFirst());
+
+	  emit status("write", QString("Writing %1 into %2...").arg(str).
+		      arg(device));
+	  process.start
+	    (tar, QStringList() << "-cvzf" << device
+	                        << str);
+	  m_pid = process.pid();
+	  process.waitForFinished(-1);
+
+	  if(process.exitCode() != 0)
+	    {
+	      emit status("write", process.readAllStandardError());
+	      emit finished("write", false);
+	      break;
+	    }
+	  else
+	    emit finished("write", true);
+	}
+
+      return;
+    }
+  else
+    {
+      emit status("write", QString("Writing %1 into %2...").arg(input).
+		  arg(device));
+      process.start
+	(tar, QStringList() << "-C" << QFileInfo(input).path()
+	                    << "-cvzf" << device
+	                    << QFileInfo(input).fileName());
+      m_pid = process.pid();
+      process.waitForFinished(-1);
+
+      if(process.exitCode() == 0)
+	emit status("write", process.readAllStandardOutput());
+    }
 
  done_label:
   emit finished("write", process.exitCode() == 0);

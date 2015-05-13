@@ -70,7 +70,8 @@ class spinware: public QMainWindow
   void write(const QString &device,
 	     const QString &input,
 	     const QString &mt,
-	     const QString &tar);
+	     const QString &tar,
+	     const bool individual);
 
  private slots:
   void slotAbort(void);

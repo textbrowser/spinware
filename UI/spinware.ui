@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>650</width>
+    <width>725</width>
     <height>750</height>
    </rect>
   </property>
@@ -257,7 +257,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>293</width>
+               <width>321</width>
                <height>326</height>
               </rect>
              </property>
@@ -668,17 +668,14 @@
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+             <widget class="QCheckBox" name="individual">
+              <property name="toolTip">
+               <string>If the input path specifies a directory, the contents of the specified directory will be individually archived.</string>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
+              <property name="text">
+               <string>&amp;Individual Files</string>
               </property>
-             </spacer>
+             </widget>
             </item>
            </layout>
           </item>
@@ -748,7 +745,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>650</width>
+     <width>725</width>
      <height>27</height>
     </rect>
    </property>
@@ -811,6 +808,7 @@
   <tabstop>input</tabstop>
   <tabstop>input_select</tabstop>
   <tabstop>compression_algorithms</tabstop>
+  <tabstop>individual</tabstop>
   <tabstop>write</tabstop>
   <tabstop>store</tabstop>
  </tabstops>

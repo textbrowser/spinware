@@ -514,7 +514,8 @@ void spinware::slotStore(void)
 			       device,
 			       input,
 			       mt,
-			       tar);
+			       tar,
+			       m_ui.individual->isChecked());
   m_futureWatcher.setFuture(m_future);
 
  done_label:
