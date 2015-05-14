@@ -35,7 +35,6 @@ void spinware::list(const QString &device,
 		    const QString &tar)
 {
   QProcess process;
-  bool ok = true;
   quint64 number = 0;
 
   emit status("list", QString("Loading %1...").arg(device));
@@ -45,8 +44,9 @@ void spinware::list(const QString &device,
 
   if(process.exitCode() != 0)
     {
-      ok = false;
-      goto done_label;
+      emit status("list", process.readAllStandardError());
+      emit finished("list", false);
+      return;
     }
   else
     emit finished("list", true);
@@ -58,8 +58,9 @@ void spinware::list(const QString &device,
 
   if(process.exitCode() != 0)
     {
-      ok = false;
-      goto done_label;
+      emit status("list", process.readAllStandardError());
+      emit finished("list", false);
+      return;
     }
   else
     emit finished("list", true);
@@ -78,8 +79,8 @@ void spinware::list(const QString &device,
       if(process.exitCode() == 0)
 	{
 	  number += 1;
-	  emit coloredStatus("list", QString("***** File Number %1 *****").
-			     arg(number));
+	  emit coloredStatus
+	    ("list", QString("***** File Number %1 *****").arg(number));
 	  emit status("list", process.readAllStandardOutput());
 	}
       else
@@ -97,12 +98,7 @@ void spinware::list(const QString &device,
     }
   while(true);
 
- done_label:
-
-  if(!ok)
-    emit status("list", process.readAllStandardError());
-
-  emit finished("list", ok);
+  emit finished("list", true);
 }
 
 void spinware::operation(const QString &device,
@@ -125,7 +121,11 @@ void spinware::operation(const QString &device,
       process.waitForFinished(-1);
 
       if(process.exitCode() != 0)
-	goto done_label;
+	{
+	  emit status("operation", process.readAllStandardOutput());
+	  emit finished("operation", false);
+	  return;
+	}
       else
 	emit finished("operation", true);
 
@@ -155,8 +155,6 @@ void spinware::operation(const QString &device,
     }
 
   process.waitForFinished(-1);
-
- done_label:
 
   if(process.exitCode() == 0)
     emit status("operation", process.readAllStandardOutput());
@@ -191,6 +189,7 @@ void spinware::read(const QString &device,
       else
 	{
 	  emit status("read", process.readAllStandardError());
+	  emit finished("read", false);
 	  return;
 	}
     }
@@ -198,7 +197,7 @@ void spinware::read(const QString &device,
   emit status("read", QString("Retrieving %1 into %2...").arg(device).
 	      arg(output));
   process.start
-    (tar, QStringList() << "-C" << output << "-xvzf" << device);
+    (tar, QStringList() << "-C" << output << "-xzf" << device);
   m_pid = process.pid();
   process.waitForFinished(-1);
 
@@ -376,7 +375,8 @@ void spinware::write(const QString &device,
   if(process.exitCode() != 0)
     {
       emit status("write", process.readAllStandardError());
-      goto done_label;
+      emit finished("write", false);
+      return;
     }
   else
     emit finished("write", true);
@@ -388,7 +388,17 @@ void spinware::write(const QString &device,
 				     QDir::Files |
 				     QDir::NoDotAndDotDot));
 
+      emit status
+	("write",
+	 QString("Setting the working directory to %1...").arg(input));
       process.setWorkingDirectory(input);
+
+      if(input != process.workingDirectory())
+	{
+	  emit status("write", "Unable to set the working directory.");
+	  emit finished("write", false);
+	  return;
+	}
 
       while(!list.isEmpty())
 	{
@@ -430,8 +440,7 @@ void spinware::write(const QString &device,
 
       if(process.exitCode() == 0)
 	emit status("write", process.readAllStandardOutput());
-    }
 
- done_label:
-  emit finished("write", process.exitCode() == 0);
+      emit finished("write", process.exitCode() == 0);
+    }
 }
