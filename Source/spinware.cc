@@ -168,6 +168,8 @@ spinware::spinware(void):QMainWindow(0)
 
   m_ui.output->setText
     (QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+  m_ui.splitter_3->setStretchFactor(0, 0);
+  m_ui.splitter_3->setStretchFactor(1, 1);
   setWindowIcon(QIcon(":/spinware.png"));
   show();
 }
@@ -207,6 +209,21 @@ void spinware::appendStatus(const QColor &color,
 
 void spinware::slotAbort(void)
 {
+  if(m_future.isFinished())
+    return;
+
+  QMessageBox mb(this);
+
+  mb.setIcon(QMessageBox::Question);
+  mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+  mb.setText(tr("Are you sure that you wish to interrupt "
+		"the current operation?"));
+  mb.setWindowTitle(tr("spinware: Confirmation"));
+  mb.setWindowModality(Qt::WindowModal);
+
+  if(mb.exec() != QMessageBox::Yes)
+    return;
+
   if(m_future.isRunning())
     if(m_pid > 0)
       ::kill(static_cast<pid_t> (m_pid), SIGTERM);
@@ -239,10 +256,7 @@ void spinware::slotFinished(const QString &operation, const bool ok)
   else if(operation == "read")
     widget = m_ui.retrieve;
   else if(operation == "write")
-    {
-      m_ui.input->clear();
-      widget = m_ui.store;
-    }
+    widget = m_ui.store;
 
   if(widget)
     {
@@ -472,6 +486,7 @@ void spinware::slotStore(void)
     return;
 
   QFileInfo fileInfo(m_ui.device->text());
+  QMessageBox mb(this);
   QString device(m_ui.device->text());
   QString error("");
   QString input(m_ui.input->text());
@@ -507,6 +522,16 @@ void spinware::slotStore(void)
       error = tr("TAR must be a readable executable.");
       goto done_label;
     }
+
+  mb.setIcon(QMessageBox::Question);
+  mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+  mb.setText(tr("Are you sure that you wish to store "
+		"the contents of %1?").arg(input));
+  mb.setWindowTitle(tr("spinware: Confirmation"));
+  mb.setWindowModality(Qt::WindowModal);
+
+  if(mb.exec() != QMessageBox::Yes)
+    return;
 
   m_pid = 0;
   m_future = QtConcurrent::run(this,
