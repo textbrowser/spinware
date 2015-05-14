@@ -415,10 +415,7 @@ void spinware::slotSelectDirectory(void)
   QFileDialog dialog(this);
 
   if(m_ui.input_select == pushButton)
-    {
-      dialog.selectFile(m_ui.input->text());
-      dialog.setDirectory(QDir::homePath());
-    }
+    dialog.selectFile(m_ui.input->text());
   else
     {
       dialog.selectFile(m_ui.output->text());
