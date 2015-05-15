@@ -1,5 +1,6 @@
 <RCC>
 	<qresource pref="/">
+	<file>calculate.png</file>
 	<file>document-open.png</file>
 	<file>go-first.png</file>
 	<file>go-last.png</file>
