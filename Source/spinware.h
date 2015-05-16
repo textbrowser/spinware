@@ -58,7 +58,8 @@ class spinware: public QMainWindow
 		    const QString &status);
   void list(const QString &device,
 	    const QString &mt,
-	    const QString &tar);
+	    const QString &tar,
+	    const bool compute_content_size);
   void operation(const QString &device,
 		 const QString &mt,
 		 const QString &command);

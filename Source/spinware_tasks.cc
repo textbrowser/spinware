@@ -32,9 +32,11 @@
 
 void spinware::list(const QString &device,
 		    const QString &mt,
-		    const QString &tar)
+		    const QString &tar,
+		    const bool compute_content_size)
 {
   QProcess process;
+  quint64 content_size = 0;
   quint64 number = 0;
 
   emit status("list", QString("Loading %1...").arg(device));
@@ -65,7 +67,11 @@ void spinware::list(const QString &device,
   else
     emit finished("list", true);
 
-  emit status("list", QString("Listing %1...").arg(device));
+  if(compute_content_size)
+    emit status
+      ("list", QString("Computing content size of %1...").arg(device));
+  else
+    emit status("list", QString("Listing %1...").arg(device));
 
   do
     {
@@ -78,10 +84,26 @@ void spinware::list(const QString &device,
 
       if(process.exitCode() == 0)
 	{
-	  number += 1;
-	  emit coloredStatus
-	    ("list", QString("***** File Number %1 *****").arg(number));
-	  emit status("list", process.readAllStandardOutput());
+	  if(!compute_content_size)
+	    {
+	      number += 1;
+	      emit coloredStatus
+		("list", QString("***** File Number %1 *****").arg(number));
+	    }
+
+	  QByteArray bytes(process.readAllStandardOutput());
+
+	  if(!compute_content_size)
+	    emit status("list", bytes);
+
+	  if(compute_content_size)
+	    {
+	      QStringList list(QString(bytes.constData()).split('\n'));
+
+	      for(int i = 0; i < list.size(); i++)
+		content_size += list.at(i).split
+		  (' ', QString::SkipEmptyParts).value(2).toLongLong();
+	    }
 	}
       else
 	break;
@@ -99,6 +121,12 @@ void spinware::list(const QString &device,
   while(true);
 
   emit finished("list", true);
+
+  if(compute_content_size)
+    emit status
+      ("list", QString("Content size... %1 MiB.").
+       arg(QString::number(static_cast<double> (content_size) /
+			   1048576.0, 'f', 1)));
 }
 
 void spinware::operation(const QString &device,
@@ -245,7 +273,8 @@ void spinware::slotList(void)
 			       &spinware::list,
 			       device,
 			       mt,
-			       tar);
+			       tar,
+			       m_ui.compute == sender());
   m_futureWatcher.setFuture(m_future);
 
  done_label:

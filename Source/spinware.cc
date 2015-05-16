@@ -66,10 +66,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotOperation(void)));
-  connect(m_ui.operations_custom_command,
-	  SIGNAL(returnPressed(void)),
+  connect(m_ui.compute,
+	  SIGNAL(clicked(void)),
 	  this,
-	  SLOT(slotOperation(void)));
+	  SLOT(slotList(void)));
   connect(m_ui.device_select,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -106,6 +106,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotSelectExecutable(void)));
+  connect(m_ui.operations_custom_command,
+	  SIGNAL(returnPressed(void)),
+	  this,
+	  SLOT(slotOperation(void)));
   connect(m_ui.output_select,
 	  SIGNAL(clicked(void)),
 	  this,

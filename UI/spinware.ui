@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>844</width>
     <height>700</height>
    </rect>
   </property>
@@ -201,6 +201,23 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="compute">
+             <property name="toolTip">
+              <string>Compute Content Size</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Icons/icons.qrc">
+               <normaloff>:/calculate.png</normaloff>:/calculate.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="list_list">
@@ -677,7 +694,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>844</width>
      <height>27</height>
     </rect>
    </property>
@@ -720,6 +737,7 @@
   <tabstop>tar</tabstop>
   <tabstop>tar_select</tabstop>
   <tabstop>list</tabstop>
+  <tabstop>compute</tabstop>
   <tabstop>list_list</tabstop>
   <tabstop>operation</tabstop>
   <tabstop>backward</tabstop>
