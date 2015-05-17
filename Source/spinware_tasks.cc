@@ -200,6 +200,20 @@ void spinware::read(const QString &device,
 {
   QProcess process;
 
+  emit status("read", QString("Loading %1...").arg(device));
+  process.start(mt, QStringList() << "-f" << device << "load");
+  m_pid = process.pid();
+  process.waitForFinished(-1);
+
+  if(process.exitCode() != 0)
+    {
+      emit status("read", process.readAllStandardError());
+      emit finished("read", false);
+      return;
+    }
+  else
+    emit finished("read", true);
+
   if(number > 0)
     {
       emit status
@@ -395,6 +409,20 @@ void spinware::write(const QString &device,
 		     const bool individual)
 {
   QProcess process;
+
+  emit status("write", QString("Loading %1...").arg(device));
+  process.start(mt, QStringList() << "-f" << device << "load");
+  m_pid = process.pid();
+  process.waitForFinished(-1);
+
+  if(process.exitCode() != 0)
+    {
+      emit status("write", process.readAllStandardError());
+      emit finished("write", false);
+      return;
+    }
+  else
+    emit finished("write", true);
 
   emit status("write", "Executing eod...");
   process.start(mt, QStringList() << "-f" << device << "eod");
