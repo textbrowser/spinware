@@ -2,6 +2,7 @@
 	<qresource pref="/">
 	<file>calculate.png</file>
 	<file>document-open.png</file>
+	<file>document-save.png</file>
 	<file>go-first.png</file>
 	<file>go-last.png</file>
 	<file>go-next.png</file>
