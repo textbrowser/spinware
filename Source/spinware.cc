@@ -86,6 +86,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotOperation(void)));
+  connect(m_ui.export_invoice,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotExport(void)));
   connect(m_ui.forward,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -203,6 +207,8 @@ void spinware::appendStatus(const QColor &color,
   if(!widget)
     return;
 
+  widget->append(QDateTime::currentDateTime().toString());
+
   if(color.isValid())
     widget->append
       (QString("<font color='%1'>%2</font>").arg(color.name()).
@@ -247,6 +253,31 @@ void spinware::slotColoredStatus(const QString &operation,
 				 const QString &status)
 {
   appendStatus(QColor(111, 0, 255), operation, status);
+}
+
+void spinware::slotExport(void)
+{
+  QFileDialog dialog(this);
+
+  dialog.selectFile("spinware-list-export.txt");
+  dialog.setAcceptMode(QFileDialog::AcceptSave);
+  dialog.setDirectory
+    (QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+  dialog.setConfirmOverwrite(true);
+
+  if(dialog.exec() == QDialog::Accepted)
+    {
+      QFile file(dialog.selectedFiles().value(0));
+
+      if(file.open(QIODevice::Text | QIODevice::Truncate |
+		   QIODevice::WriteOnly))
+	{
+	  file.write(m_ui.list->toPlainText().toLatin1().constData());
+	  file.flush();
+	}
+
+      file.close();
+    }
 }
 
 void spinware::slotFinished(const QString &operation, const bool ok)

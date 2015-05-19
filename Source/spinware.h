@@ -79,6 +79,7 @@ class spinware: public QMainWindow
   void slotAbout(void);
   void slotColoredStatus(const QString &operation,
 			 const QString &status);
+  void slotExport(void);
   void slotFinished(const QString &operation, const bool ok);
   void slotFutureFinished(void);
   void slotHighlightPaths(void);
