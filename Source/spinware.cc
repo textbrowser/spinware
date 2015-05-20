@@ -31,6 +31,7 @@ extern "C"
 #include <sys/types.h>
 }
 
+#include <QCloseEvent>
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -217,6 +218,31 @@ void spinware::appendStatus(const QColor &color,
     widget->append(status.trimmed());
 }
 
+void spinware::closeEvent(QCloseEvent *event)
+{
+  if(event)
+    if(!m_future.isFinished())
+      {
+	QMessageBox mb(this);
+
+	mb.setIcon(QMessageBox::Question);
+	mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+	mb.setText(tr("An operation is active. Are you sure that "
+		      "you wish to exit?"));
+	mb.setWindowTitle(tr("spinware: Confirmation"));
+	mb.setWindowModality(Qt::WindowModal);
+
+	if(mb.exec() != QMessageBox::Yes)
+	  {
+	    event->ignore();
+	    return;
+	  }
+      }
+
+  QMainWindow::closeEvent(event);
+  QApplication::instance()->quit();
+}
+
 void spinware::slotAbort(void)
 {
   if(m_future.isFinished())
@@ -246,7 +272,7 @@ void spinware::slotAbout(void)
   QMessageBox::information
     (this, tr("spinware: Information"),
      QString("Qt version %1.\n"
-	     "spinware: version 1.00.").arg(QT_VERSION_STR));
+	     "spinware: version 05.22.2015.").arg(QT_VERSION_STR));
 }
 
 void spinware::slotColoredStatus(const QString &operation,
@@ -377,7 +403,7 @@ void spinware::slotHighlightPaths(void)
 
 void spinware::slotQuit(void)
 {
-  QApplication::instance()->quit();
+  close();
 }
 
 void spinware::slotRead(void)

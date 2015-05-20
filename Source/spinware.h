@@ -56,6 +56,7 @@ class spinware: public QMainWindow
   void appendStatus(const QColor &color,
 		    const QString &operation,
 		    const QString &status);
+  void closeEvent(QCloseEvent *event);
   void list(const QString &device,
 	    const QString &mt,
 	    const QString &tar,
