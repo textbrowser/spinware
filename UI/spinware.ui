@@ -681,6 +681,23 @@
             </spacer>
            </item>
            <item>
+            <widget class="QPushButton" name="export_store">
+             <property name="toolTip">
+              <string>Export Display</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Icons/icons.qrc">
+               <normaloff>:/document-save.png</normaloff>:/document-save.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="write">
              <property name="toolTip">
               <string>Write</string>
@@ -712,7 +729,7 @@
      <x>0</x>
      <y>0</y>
      <width>844</width>
-     <height>27</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -777,6 +794,7 @@
   <tabstop>compression_algorithms</tabstop>
   <tabstop>individual</tabstop>
   <tabstop>store</tabstop>
+  <tabstop>export_store</tabstop>
   <tabstop>write</tabstop>
  </tabstops>
  <resources>

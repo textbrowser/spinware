@@ -91,6 +91,10 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotExport(void)));
+  connect(m_ui.export_store,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotExport(void)));
   connect(m_ui.forward,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -285,7 +289,11 @@ void spinware::slotExport(void)
 {
   QFileDialog dialog(this);
 
-  dialog.selectFile("spinware-list-export.txt");
+  if(m_ui.export_invoice == sender())
+    dialog.selectFile("spinware-list-export.txt");
+  else
+    dialog.selectFile("spinware-store-export.txt");
+
   dialog.setAcceptMode(QFileDialog::AcceptSave);
   dialog.setDirectory
     (QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
@@ -298,7 +306,11 @@ void spinware::slotExport(void)
       if(file.open(QIODevice::Text | QIODevice::Truncate |
 		   QIODevice::WriteOnly))
 	{
-	  file.write(m_ui.list->toPlainText().toLatin1().constData());
+	  if(m_ui.export_invoice == sender())
+	    file.write(m_ui.list->toPlainText().toUtf8().constData());
+	  else
+	    file.write(m_ui.store->toPlainText().toUtf8().constData());
+
 	  file.flush();
 	}
 
