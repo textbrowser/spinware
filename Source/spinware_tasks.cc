@@ -96,14 +96,11 @@ void spinware::list(const QString &device,
 	  if(!compute_content_size)
 	    emit status("list", bytes);
 
-	  if(compute_content_size)
-	    {
-	      QStringList list(QString(bytes.constData()).split('\n'));
+	  QStringList list(QString(bytes.constData()).split('\n'));
 
-	      for(int i = 0; i < list.size(); i++)
-		content_size += list.at(i).split
-		  (' ', QString::SkipEmptyParts).value(2).toLongLong();
-	    }
+	  for(int i = 0; i < list.size(); i++)
+	    content_size += list.at(i).split
+	      (' ', QString::SkipEmptyParts).value(2).toLongLong();
 	}
       else
 	break;
@@ -121,12 +118,10 @@ void spinware::list(const QString &device,
   while(true);
 
   emit finished("list", true);
-
-  if(compute_content_size)
-    emit status
-      ("list", QString("Content size... %1 MiB.").
-       arg(QString::number(static_cast<double> (content_size) /
-			   1048576.0, 'f', 1)));
+  emit status
+    ("list", QString("Content size... %1 MiB.").
+     arg(QString::number(static_cast<double> (content_size) /
+			 1048576.0, 'f', 1)));
 }
 
 void spinware::operation(const QString &device,
