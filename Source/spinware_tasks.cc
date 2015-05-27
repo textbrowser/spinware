@@ -99,8 +99,9 @@ void spinware::list(const QString &device,
 	  QStringList list(QString(bytes.constData()).split('\n'));
 
 	  for(int i = 0; i < list.size(); i++)
-	    content_size += list.at(i).split
-	      (' ', QString::SkipEmptyParts).value(2).toLongLong();
+	    content_size += static_cast<quint64>
+	      (list.at(i).split(' ', QString::SkipEmptyParts).
+	       value(2).toLongLong());
 	}
       else
 	break;
