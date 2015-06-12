@@ -1,3 +1,12 @@
+2015.06.12
+
+1. Archive single files if requested.
+2. Corrected duplicate compression algorithms.
+3. Extract the entire contents of the tape if File Number is set to 0
+   during the retrieval process. Terminate upon cancellation or error.
+4. Rewind the tape if the File Number is set to 0 before retrieving
+   contents.
+
 2015.05.29
 
 1. Conversion corrections.

@@ -573,7 +573,6 @@
           </layout>
          </item>
         </layout>
-        <zorder>retrieve</zorder>
        </widget>
        <widget class="QGroupBox" name="groupBox_7">
         <property name="title">
@@ -633,11 +632,6 @@
              <property name="sizeAdjustPolicy">
               <enum>QComboBox::AdjustToContents</enum>
              </property>
-             <item>
-              <property name="text">
-               <string>/bin/gzip</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item>
@@ -728,7 +722,7 @@
      <x>0</x>
      <y>0</y>
      <width>844</width>
-     <height>24</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

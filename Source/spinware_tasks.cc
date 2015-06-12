@@ -210,7 +210,23 @@ void spinware::read(const QString &device,
   else
     emit finished("read", true);
 
-  if(number > 0)
+  if(number == 0)
+    {
+      emit status("read", QString("Rewinding %1...").arg(device));
+      process.start(mt, QStringList() << "-f" << device << "rewind");
+      m_pid = process.pid();
+      process.waitForFinished(-1);
+
+      if(process.exitCode() == 0)
+	emit finished("read", true);
+      else
+	{
+	  emit status("read", process.readAllStandardError());
+	  emit finished("read", false);
+	  return;
+	}
+    }
+  else if(number > 0)
     {
       emit status
 	("read",
@@ -232,17 +248,36 @@ void spinware::read(const QString &device,
 	}
     }
 
-  emit status("read", QString("Retrieving %1 into %2...").arg(device).
-	      arg(output));
-  process.start
-    (tar, QStringList() << "-C" << output << "-xzf" << device);
-  m_pid = process.pid();
-  process.waitForFinished(-1);
+  do
+    {
+      emit status("read", QString("Retrieving %1 into %2...").arg(device).
+		  arg(output));
+      process.start
+	(tar, QStringList() << "-C" << output << "-vxzf" << device);
+      m_pid = process.pid();
+      process.waitForFinished(-1);
 
-  if(process.exitCode() != 0)
-    emit status("read", process.readAllStandardError());
+      if(process.exitCode() != 0)
+	emit status("read", process.readAllStandardError());
+      else
+	emit status("read", process.readAllStandardOutput());
 
-  emit finished("read", process.exitCode() == 0);
+      emit finished("read", process.exitCode() == 0);
+
+      if(m_future.isCanceled() || number > 0 || process.exitCode() != 0)
+	break;
+
+      process.start(mt, QStringList() << "-f" << device << "status");
+      m_pid = process.pid();
+      process.waitForFinished(-1);
+
+      if(process.exitCode() == 0)
+	{
+	  if(process.readAllStandardOutput().trimmed().contains("EOD"))
+	    break;
+	}
+    }
+  while(true);
 }
 
 void spinware::slotList(void)
