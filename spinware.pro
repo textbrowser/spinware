@@ -1,4 +1,4 @@
-purge.commands = rm -f *~ && rm -f rm -f */*~
+purge.commands = rm -f *~ && rm -f */*~
 
 CONFIG		+= qt release thread warn_on
 LANGUAGE	= C++
