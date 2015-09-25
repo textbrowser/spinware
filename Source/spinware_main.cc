@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
       new spinware();
       return qapplication.exec();
     }
-  catch(std::bad_alloc &exception)
+  catch(const std::bad_alloc &exception)
     {
       std::cerr << QObject::tr("Memory allocation error at line ").
 	toStdString()
