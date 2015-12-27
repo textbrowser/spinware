@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>844</width>
-    <height>700</height>
+    <height>753</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,9 +47,12 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="abort">
+       <widget class="QToolButton" name="abort">
         <property name="toolTip">
          <string>Abort Current Task</string>
+        </property>
+        <property name="text">
+         <string>Abort</string>
         </property>
         <property name="icon">
          <iconset resource="../Icons/icons.qrc">
@@ -61,7 +64,10 @@
           <height>48</height>
          </size>
         </property>
-        <property name="flat">
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+        <property name="autoRaise">
          <bool>true</bool>
         </property>
        </widget>
@@ -203,9 +209,12 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="compute">
+            <widget class="QToolButton" name="compute">
              <property name="toolTip">
               <string>Compute Content Size</string>
+             </property>
+             <property name="text">
+              <string>Compute</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/icons.qrc">
@@ -217,12 +226,21 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="export_invoice">
+            <widget class="QToolButton" name="export_invoice">
              <property name="toolTip">
               <string>Export Display</string>
+             </property>
+             <property name="text">
+              <string>Invoice</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/icons.qrc">
@@ -234,11 +252,20 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="list_list">
+            <widget class="QToolButton" name="list_list">
              <property name="toolTip">
+              <string>List</string>
+             </property>
+             <property name="text">
               <string>List</string>
              </property>
              <property name="icon">
@@ -250,6 +277,12 @@
                <width>24</width>
                <height>24</height>
               </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -283,9 +316,12 @@
             <number>5</number>
            </property>
            <item>
-            <widget class="QPushButton" name="backward">
+            <widget class="QToolButton" name="backward">
              <property name="toolTip">
               <string>Backward</string>
+             </property>
+             <property name="text">
+              <string>Back</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/icons.qrc">
@@ -297,11 +333,20 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="eject">
+            <widget class="QToolButton" name="eject">
              <property name="toolTip">
+              <string>Eject</string>
+             </property>
+             <property name="text">
               <string>Eject</string>
              </property>
              <property name="icon">
@@ -314,11 +359,20 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="end">
+            <widget class="QToolButton" name="end">
              <property name="toolTip">
+              <string>End</string>
+             </property>
+             <property name="text">
               <string>End</string>
              </property>
              <property name="icon">
@@ -331,12 +385,21 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="erase">
+            <widget class="QToolButton" name="erase">
              <property name="toolTip">
               <string>Erase!</string>
+             </property>
+             <property name="text">
+              <string>Erase</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/icons.qrc">
@@ -348,11 +411,20 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="forward">
+            <widget class="QToolButton" name="forward">
              <property name="toolTip">
+              <string>Forward</string>
+             </property>
+             <property name="text">
               <string>Forward</string>
              </property>
              <property name="icon">
@@ -365,11 +437,20 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="load">
+            <widget class="QToolButton" name="load">
              <property name="toolTip">
+              <string>Load</string>
+             </property>
+             <property name="text">
               <string>Load</string>
              </property>
              <property name="icon">
@@ -382,11 +463,20 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="rewind">
+            <widget class="QToolButton" name="rewind">
              <property name="toolTip">
+              <string>Rewind</string>
+             </property>
+             <property name="text">
               <string>Rewind</string>
              </property>
              <property name="icon">
@@ -399,11 +489,20 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="status">
+            <widget class="QToolButton" name="status">
              <property name="toolTip">
+              <string>Status</string>
+             </property>
+             <property name="text">
               <string>Status</string>
              </property>
              <property name="icon">
@@ -415,6 +514,12 @@
                <width>24</width>
                <height>24</height>
               </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -554,9 +659,12 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="read">
+            <widget class="QToolButton" name="read">
              <property name="toolTip">
-              <string>Read</string>
+              <string>Retrieve</string>
+             </property>
+             <property name="text">
+              <string>Retrieve</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/icons.qrc">
@@ -567,6 +675,12 @@
                <width>24</width>
                <height>24</height>
               </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -674,9 +788,12 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="export_store">
+            <widget class="QToolButton" name="export_store">
              <property name="toolTip">
               <string>Export Display</string>
+             </property>
+             <property name="text">
+              <string>Invoice</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/icons.qrc">
@@ -688,12 +805,21 @@
                <height>24</height>
               </size>
              </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="write">
+            <widget class="QToolButton" name="write">
              <property name="toolTip">
-              <string>Write</string>
+              <string>Store</string>
+             </property>
+             <property name="text">
+              <string>Store</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/icons.qrc">
@@ -704,6 +830,12 @@
                <width>24</width>
                <height>24</height>
               </size>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextUnderIcon</enum>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
              </property>
             </widget>
            </item>

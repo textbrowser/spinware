@@ -333,24 +333,24 @@ void spinware::slotOperation(void)
   if(!m_future.isFinished())
     return;
 
-  QPushButton *pushButton = qobject_cast<QPushButton *> (sender());
   QString command("");
+  QToolButton *toolButton = qobject_cast<QToolButton *> (sender());
 
-  if(m_ui.backward == pushButton)
+  if(m_ui.backward == toolButton)
     command = "bsfm";
-  else if(m_ui.eject == pushButton)
+  else if(m_ui.eject == toolButton)
     command = "eject";
-  else if(m_ui.end == pushButton)
+  else if(m_ui.end == toolButton)
     command = "eod";
-  else if(m_ui.erase == pushButton)
+  else if(m_ui.erase == toolButton)
     command = "erase";
-  else if(m_ui.forward == pushButton)
+  else if(m_ui.forward == toolButton)
     command = "fsf";
-  else if(m_ui.load == pushButton)
+  else if(m_ui.load == toolButton)
     command = "load";
-  else if(m_ui.rewind == pushButton)
+  else if(m_ui.rewind == toolButton)
     command = "rewind";
-  else if(m_ui.status == pushButton)
+  else if(m_ui.status == toolButton)
     command = "status";
   else
     command = m_ui.operations_custom_command->text().trimmed();
@@ -404,7 +404,7 @@ void spinware::slotOperation(void)
 	    return;
 	}
     }
-  else if(!pushButton)
+  else if(!toolButton)
     {
       QMessageBox mb(this);
 
