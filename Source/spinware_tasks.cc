@@ -28,12 +28,12 @@
 #include <QMessageBox>
 #include <QProcess>
 
-#include "spinware.h"
+#include "spinware_page.h"
 
-void spinware::list(const QString &device,
-		    const QString &mt,
-		    const QString &tar,
-		    const bool compute_content_size)
+void spinware_page::list(const QString &device,
+			 const QString &mt,
+			 const QString &tar,
+			 const bool compute_content_size)
 {
   QProcess process;
   quint64 content_size = 0;
@@ -125,9 +125,9 @@ void spinware::list(const QString &device,
 			 1048576.0, 'f', 1)));
 }
 
-void spinware::operation(const QString &device,
-			 const QString &mt,
-			 const QString &command)
+void spinware_page::operation(const QString &device,
+			      const QString &mt,
+			      const QString &command)
 {
   QProcess process;
 
@@ -188,11 +188,11 @@ void spinware::operation(const QString &device,
   emit finished("operation", process.exitCode() == 0);
 }
 
-void spinware::read(const QString &device,
-		    const QString &mt,
-		    const QString &output,
-		    const QString &tar,
-		    const int number)
+void spinware_page::read(const QString &device,
+			 const QString &mt,
+			 const QString &output,
+			 const QString &tar,
+			 const int number)
 {
   QProcess process;
 
@@ -280,7 +280,7 @@ void spinware::read(const QString &device,
   while(true);
 }
 
-void spinware::slotList(void)
+void spinware_page::slotList(void)
 {
   if(!m_future.isFinished())
     return;
@@ -315,7 +315,7 @@ void spinware::slotList(void)
 
   m_pid = 0;
   m_future = QtConcurrent::run(this,
-			       &spinware::list,
+			       &spinware_page::list,
 			       device,
 			       mt,
 			       tar,
@@ -328,7 +328,7 @@ void spinware::slotList(void)
     QMessageBox::critical(this, tr("spinware: Error"), error);
 }
 
-void spinware::slotOperation(void)
+void spinware_page::slotOperation(void)
 {
   if(!m_future.isFinished())
     return;
@@ -421,7 +421,7 @@ void spinware::slotOperation(void)
 
   m_pid = 0;
   m_future = QtConcurrent::run(this,
-			       &spinware::operation,
+			       &spinware_page::operation,
 			       device,
 			       mt,
 			       command);
@@ -433,11 +433,11 @@ void spinware::slotOperation(void)
     QMessageBox::critical(this, tr("spinware: Error"), error);
 }
 
-void spinware::write(const QString &device,
-		     const QString &input,
-		     const QString &mt,
-		     const QString &tar,
-		     const bool individual)
+void spinware_page::write(const QString &device,
+			  const QString &input,
+			  const QString &mt,
+			  const QString &tar,
+			  const bool individual)
 {
   QProcess process;
 

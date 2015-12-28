@@ -14,14 +14,17 @@ QMAKE_EXTRA_TARGETS = purge
 
 INCLUDEPATH	+= Source
 
-FORMS           = UI/spinware.ui
+FORMS           = UI/spinware.ui \
+		  UI/spinware_page.ui
 
-HEADERS		= Source/spinware.h
+HEADERS		= Source/spinware.h \
+		  Source/spinware_page.h
 
 RESOURCES       = Icons/icons.qrc
 
 SOURCES		= Source/spinware.cc \
                   Source/spinware_main.cc \
+		  Source/spinware_page.cc \
                   Source/spinware_tasks.cc
 
 PROJECTNAME	= spinware
