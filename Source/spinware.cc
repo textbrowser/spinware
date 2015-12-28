@@ -56,6 +56,7 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(tabCloseRequested(int)),
 	  this,
 	  SLOT(slotCloseTab(int)));
+  m_ui.tab->setDocumentMode(true);
   m_ui.tab->setStyleSheet
     ("QTabBar::tear {"
      "image: none;"

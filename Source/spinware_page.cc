@@ -31,11 +31,15 @@ extern "C"
 #include <sys/types.h>
 }
 
+#if QT_VERSION < 0x050000
 #include <QDesktopServices>
+#endif
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
-
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#endif
 #include "spinware_page.h"
 
 spinware_page::spinware_page(QWidget *parent):QWidget(parent)
@@ -170,8 +174,14 @@ spinware_page::spinware_page(QWidget *parent):QWidget(parent)
   if(m_ui.compression_algorithms->count() == 0)
     m_ui.compression_algorithms->addItem("n/a");
 
+#if QT_VERSION < 0x050000
   m_ui.output->setText
     (QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+#else
+  m_ui.output->setText
+    (QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).
+     value(0));
+#endif
   m_ui.splitter_3->setStretchFactor(0, 0);
   m_ui.splitter_3->setStretchFactor(1, 1);
 }
@@ -256,8 +266,14 @@ void spinware_page::slotExport(void)
     dialog.selectFile("spinware-store-export.txt");
 
   dialog.setAcceptMode(QFileDialog::AcceptSave);
+#if QT_VERSION < 0x050000
   dialog.setDirectory
     (QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+#else
+  dialog.setDirectory
+    (QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).
+     value(0));
+#endif
   dialog.setConfirmOverwrite(true);
 
   if(dialog.exec() == QDialog::Accepted)

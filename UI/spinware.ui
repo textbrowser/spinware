@@ -55,23 +55,6 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QSplitter" name="splitter_3">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <widget class="QSplitter" name="splitter_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QSplitter" name="splitter">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -80,7 +63,7 @@
      <x>0</x>
      <y>0</y>
      <width>877</width>
-     <height>24</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
