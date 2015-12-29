@@ -127,6 +127,7 @@ void spinware::slotAbout(void)
 
 void spinware::slotCloseTab(int index)
 {
+  int count = m_ui.tab->count();
   spinware_page *page =
     qobject_cast<spinware_page *> (m_ui.tab->widget(index));
 
@@ -149,8 +150,14 @@ void spinware::slotCloseTab(int index)
 	    return;
 	}
 
+      count -= 1;
       page->deleteLater();
     }
+
+  if(count < 2)
+    m_ui.tab->setTabsClosable(false);
+  else
+    m_ui.tab->setTabsClosable(true);
 }
 
 void spinware::slotNewPage(void)
@@ -158,7 +165,14 @@ void spinware::slotNewPage(void)
   spinware_page *page = new (std::nothrow) spinware_page(this);
 
   if(page)
-    m_ui.tab->addTab(page, QIcon(":/spinware.png"), tr("Page"));
+    {
+      m_ui.tab->addTab(page, QIcon(":/spinware.png"), tr("Page"));
+
+      if(m_ui.tab->count() > 1)
+	m_ui.tab->setTabsClosable(true);
+      else
+	m_ui.tab->setTabsClosable(false);
+    }
   else
     QMessageBox::critical(this,
 			  tr("spinware: Error"),
