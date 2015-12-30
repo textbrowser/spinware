@@ -30,7 +30,7 @@
 
 #include "spinware_page.h"
 
-void spinware_page::list(const QString &device,
+bool spinware_page::list(const QString &device,
 			 const QString &mt,
 			 const QString &tar,
 			 const bool compute_content_size)
@@ -48,7 +48,7 @@ void spinware_page::list(const QString &device,
     {
       emit status("list", process.readAllStandardError());
       emit finished("list", false);
-      return;
+      return false;
     }
   else
     emit finished("list", true);
@@ -62,7 +62,7 @@ void spinware_page::list(const QString &device,
     {
       emit status("list", process.readAllStandardError());
       emit finished("list", false);
-      return;
+      return false;
     }
   else
     emit finished("list", true);
@@ -123,9 +123,10 @@ void spinware_page::list(const QString &device,
     ("list", QString("Content size... %1 MiB.").
      arg(QString::number(static_cast<double> (content_size) /
 			 1048576.0, 'f', 1)));
+  return true;
 }
 
-void spinware_page::operation(const QString &device,
+bool spinware_page::operation(const QString &device,
 			      const QString &mt,
 			      const QString &command)
 {
@@ -148,7 +149,7 @@ void spinware_page::operation(const QString &device,
 	{
 	  emit status("operation", process.readAllStandardOutput());
 	  emit finished("operation", false);
-	  return;
+	  return false;
 	}
       else
 	emit finished("operation", true);
@@ -156,7 +157,7 @@ void spinware_page::operation(const QString &device,
       QString str(process.readAllStandardOutput().toLower());
 
       if(str.contains("file number=0"))
-	return;
+	return true;
       else if(str.contains("file number=1"))
 	{
 	  emit status("operation", "Executing rewind...");
@@ -186,9 +187,10 @@ void spinware_page::operation(const QString &device,
     emit status("operation", process.readAllStandardError());
 
   emit finished("operation", process.exitCode() == 0);
+  return process.exitCode() == 0;
 }
 
-void spinware_page::read(const QString &device,
+bool spinware_page::read(const QString &device,
 			 const QString &mt,
 			 const QString &output,
 			 const QString &tar,
@@ -205,7 +207,7 @@ void spinware_page::read(const QString &device,
     {
       emit status("read", process.readAllStandardError());
       emit finished("read", false);
-      return;
+      return false;
     }
   else
     emit finished("read", true);
@@ -223,7 +225,7 @@ void spinware_page::read(const QString &device,
 	{
 	  emit status("read", process.readAllStandardError());
 	  emit finished("read", false);
-	  return;
+	  return false;
 	}
     }
   else if(number > 0)
@@ -244,7 +246,7 @@ void spinware_page::read(const QString &device,
 	{
 	  emit status("read", process.readAllStandardError());
 	  emit finished("read", false);
-	  return;
+	  return false;
 	}
     }
 
@@ -278,18 +280,23 @@ void spinware_page::read(const QString &device,
 	}
     }
   while(true);
+
+  return process.exitCode() == 0;
 }
 
 void spinware_page::slotList(void)
 {
-  if(!m_future.isFinished())
-    return;
-
   QFileInfo fileInfo(m_ui.device->text());
   QString device(m_ui.device->text());
   QString error("");
   QString mt(m_ui.mt->text());
   QString tar(m_ui.tar->text());
+
+  if(!m_future.isFinished())
+    {
+      error = tr("An operation is in progress.");
+      goto done_label;
+    }
 
   if(!fileInfo.isReadable())
     {
@@ -314,6 +321,7 @@ void spinware_page::slotList(void)
     }
 
   m_pid = 0;
+  m_storeOperation = false;
   m_future = QtConcurrent::run(this,
 			       &spinware_page::list,
 			       device,
@@ -330,9 +338,6 @@ void spinware_page::slotList(void)
 
 void spinware_page::slotOperation(void)
 {
-  if(!m_future.isFinished())
-    return;
-
   QString command("");
   QToolButton *toolButton = qobject_cast<QToolButton *> (sender());
 
@@ -357,8 +362,13 @@ void spinware_page::slotOperation(void)
 
   if(command.isEmpty())
     {
-      QMessageBox::critical(this, tr("spinware: Error"),
-			    tr("Please specify a command."));
+      if(!m_future.isFinished())
+	QMessageBox::critical(this, tr("spinware: Error"),
+			      tr("An operation is in progress."));
+      else
+	QMessageBox::critical(this, tr("spinware: Error"),
+			      tr("Please specify a command."));
+
       return;
     }
 
@@ -366,6 +376,12 @@ void spinware_page::slotOperation(void)
   QString device(m_ui.device->text());
   QString error("");
   QString mt(m_ui.mt->text());
+
+  if(!m_future.isFinished())
+    {
+      error = tr("An operation is in progress.");
+      goto done_label;
+    }
 
   if(!fileInfo.isReadable())
     {
@@ -420,6 +436,7 @@ void spinware_page::slotOperation(void)
     }
 
   m_pid = 0;
+  m_storeOperation = false;
   m_future = QtConcurrent::run(this,
 			       &spinware_page::operation,
 			       device,
@@ -433,7 +450,7 @@ void spinware_page::slotOperation(void)
     QMessageBox::critical(this, tr("spinware: Error"), error);
 }
 
-void spinware_page::write(const QString &device,
+bool spinware_page::write(const QString &device,
 			  const QString &input,
 			  const QString &mt,
 			  const QString &tar,
@@ -450,7 +467,7 @@ void spinware_page::write(const QString &device,
     {
       emit status("write", process.readAllStandardError());
       emit finished("write", false);
-      return;
+      return false;
     }
   else
     emit finished("write", true);
@@ -464,7 +481,7 @@ void spinware_page::write(const QString &device,
     {
       emit status("write", process.readAllStandardError());
       emit finished("write", false);
-      return;
+      return false;
     }
   else
     emit finished("write", true);
@@ -485,7 +502,7 @@ void spinware_page::write(const QString &device,
 	{
 	  emit status("write", "Unable to set the working directory.");
 	  emit finished("write", false);
-	  return;
+	  return false;
 	}
 
       while(!list.isEmpty())
@@ -513,7 +530,7 @@ void spinware_page::write(const QString &device,
 	    emit finished("write", true);
 	}
 
-      return;
+      return process.exitCode() == 0;
     }
   else
     {
@@ -530,5 +547,6 @@ void spinware_page::write(const QString &device,
 	emit status("write", process.readAllStandardOutput());
 
       emit finished("write", process.exitCode() == 0);
+      return process.exitCode() == 0;
     }
 }

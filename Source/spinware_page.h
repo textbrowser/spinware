@@ -49,31 +49,32 @@ class spinware_page: public QWidget
   bool isFinished(void) const;
 
  private:
-  QFuture<void> m_future;
-  QFutureWatcher<void> m_futureWatcher;
+  QFuture<bool> m_future;
+  QFutureWatcher<bool> m_futureWatcher;
   QTimer m_timer;
   Ui_spinware_page m_ui;
+  bool m_storeOperation;
   qint64 m_pid;
-  void appendStatus(const QColor &color,
-		    const QString &operation,
-		    const QString &status);
-  void list(const QString &device,
+  bool list(const QString &device,
 	    const QString &mt,
 	    const QString &tar,
 	    const bool compute_content_size);
-  void operation(const QString &device,
+  bool operation(const QString &device,
 		 const QString &mt,
 		 const QString &command);
-  void read(const QString &device,
+  bool read(const QString &device,
 	    const QString &mt,
 	    const QString &output,
 	    const QString &tar,
 	    const int number);
-  void write(const QString &device,
+  bool write(const QString &device,
 	     const QString &input,
 	     const QString &mt,
 	     const QString &tar,
 	     const bool individual);
+  void appendStatus(const QColor &color,
+		    const QString &operation,
+		    const QString &status);
 
  private slots:
   void slotAbort(void);
@@ -86,6 +87,7 @@ class spinware_page: public QWidget
   void slotList(void);
   void slotOperation(void);
   void slotRead(void);
+  void slotSchedule(void);
   void slotSelectDirectory(void);
   void slotSelectExecutable(void);
   void slotStatus(const QString &operation,

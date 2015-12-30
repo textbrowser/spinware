@@ -46,6 +46,7 @@ spinware_page::spinware_page(QWidget *parent):QWidget(parent)
 {
   m_ui.setupUi(this);
   m_pid = 0;
+  m_storeOperation = false;
   connect(&m_futureWatcher,
 	  SIGNAL(finished(void)),
 	  this,
@@ -126,6 +127,10 @@ spinware_page::spinware_page(QWidget *parent):QWidget(parent)
 	  SIGNAL(clicked(void)),
 	  this,
 	  SLOT(slotOperation(void)));
+  connect(m_ui.schedule,
+	  SIGNAL(clicked(void)),
+	  this,
+	  SLOT(slotSchedule(void)));
   connect(m_ui.status,
 	  SIGNAL(clicked(void)),
 	  this,
@@ -248,6 +253,7 @@ void spinware_page::slotAbort(void)
       ::kill(static_cast<pid_t> (m_pid), SIGTERM);
 
   m_future.cancel();
+  m_storeOperation = false;
 }
 
 void spinware_page::slotColoredStatus(const QString &operation,
@@ -320,6 +326,70 @@ void spinware_page::slotFinished(const QString &operation, const bool ok)
 void spinware_page::slotFutureFinished(void)
 {
   m_pid = 0;
+
+  if(m_storeOperation)
+    {
+      /*
+      ** Discover the next file.
+      */
+
+      int row = -1;
+
+      QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+      for(int i = 0; i < m_ui.table->rowCount(); i++)
+	if(m_ui.table->item(i, 2)->text().isEmpty())
+	  {
+	    row = i;
+	    break;
+	  }
+
+      QApplication::restoreOverrideCursor();
+
+      if(row > -1)
+	{
+	  if(m_future.result())
+	    m_ui.table->item(row, 2)->setText(tr("Yes"));
+	  else
+	    m_ui.table->item(row, 2)->setText(tr("No"));
+	}
+
+      if(m_future.isCanceled())
+	return;
+
+      row = -1;
+      QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+      for(int i = 0; i < m_ui.table->rowCount(); i++)
+	if(m_ui.table->item(i, 2)->text().isEmpty())
+	  {
+	    row = i;
+	    break;
+	  }
+
+      QApplication::restoreOverrideCursor();
+
+      if(row > -1)
+	{
+	  QString device(m_ui.table->item(row, 3)->text());
+	  QString input(m_ui.table->item(row, 0)->text());
+	  QString mt(m_ui.table->item(row, 4)->text());
+	  QString tar(m_ui.table->item(row, 5)->text());
+	  bool individual = false;
+
+	  individual = m_ui.table->item(row, 1)->text().length() > 0;
+	  m_pid = 0;
+	  m_storeOperation = true;
+	  m_future = QtConcurrent::run(this,
+				       &spinware_page::write,
+				       device,
+				       input,
+				       mt,
+				       tar,
+				       individual);
+	  m_futureWatcher.setFuture(m_future);
+	}
+    }
 }
 
 void spinware_page::slotHighlightPaths(void)
@@ -392,9 +462,6 @@ void spinware_page::slotHighlightPaths(void)
 
 void spinware_page::slotRead(void)
 {
-  if(!m_future.isFinished())
-    return;
-
   QFileInfo fileInfo(m_ui.device->text());
   QString device(m_ui.device->text());
   QString error("");
@@ -402,6 +469,12 @@ void spinware_page::slotRead(void)
   QString output(m_ui.output->text());
   QString tar(m_ui.tar->text());
   int number = m_ui.number->value();
+
+  if(!m_future.isFinished())
+    {
+      error = tr("An operation is in progress.");
+      goto done_label;
+    }
 
   if(!fileInfo.isReadable())
     {
@@ -434,6 +507,7 @@ void spinware_page::slotRead(void)
     }
 
   m_pid = 0;
+  m_storeOperation = false;
   m_future = QtConcurrent::run(this,
 			       &spinware_page::read,
 			       device,
@@ -442,6 +516,75 @@ void spinware_page::slotRead(void)
 			       tar,
 			       number);
   m_futureWatcher.setFuture(m_future);
+
+ done_label:
+
+  if(!error.isEmpty())
+    QMessageBox::critical(this, tr("spinware: Error"), error);
+}
+
+void spinware_page::slotSchedule(void)
+{
+  QFileInfo fileInfo(m_ui.device->text());
+  QString device(m_ui.device->text());
+  QString error("");
+  QString mt(m_ui.mt->text());
+  QString tar(m_ui.tar->text());
+  QTableWidgetItem *item = 0;
+  int row = -1;
+
+  if(!fileInfo.isWritable())
+    {
+      error = tr("Device is not writable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(m_ui.input->text());
+
+  if(!fileInfo.isReadable())
+    {
+      error = tr("The input file is not readable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(mt);
+
+  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
+    {
+      error = tr("MT must be a readable executable.");
+      goto done_label;
+    }
+
+  fileInfo.setFile(tar);
+
+  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
+    {
+      error = tr("TAR must be a readable executable.");
+      goto done_label;
+    }
+
+  m_ui.table->setRowCount(m_ui.table->rowCount() + 1);
+  row = m_ui.table->rowCount() - 1;
+  item = new QTableWidgetItem(m_ui.input->text());
+  item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+  m_ui.table->setItem(row, 0, item);
+  item = new QTableWidgetItem(m_ui.individual->isChecked() ? tr("Yes") : "");
+  item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+  m_ui.table->setItem(row, 1, item);
+  item = new QTableWidgetItem();
+  item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+  m_ui.table->setItem(row, 2, item);
+  item = new QTableWidgetItem(device);
+  item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+  m_ui.table->setItem(row, 3, item);
+  item = new QTableWidgetItem(mt);
+  item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+  m_ui.table->setItem(row, 4, item);
+  item = new QTableWidgetItem(tar);
+  item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+  m_ui.table->setItem(row, 5, item);
+  m_ui.individual->setChecked(false);
+  m_ui.input->clear();
 
  done_label:
 
@@ -527,65 +670,61 @@ void spinware_page::slotStatus(const QString &operation,
 
 void spinware_page::slotStore(void)
 {
-  if(!m_future.isFinished())
-    return;
-
-  QFileInfo fileInfo(m_ui.device->text());
   QMessageBox mb(this);
-  QString device(m_ui.device->text());
+  QString device("");
   QString error("");
-  QString input(m_ui.input->text());
-  QString mt(m_ui.mt->text());
-  QString tar(m_ui.tar->text());
+  QString input("");
+  QString mt("");
+  QString tar("");
+  bool individual = false;
+  int row = -1;
 
-  if(!fileInfo.isWritable())
+  if(!m_future.isFinished())
     {
-      error = tr("Device is not writable.");
+      error = tr("An operation is in progress.");
       goto done_label;
     }
 
-  fileInfo.setFile(input);
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-  if(!fileInfo.isReadable())
+  for(int i = 0; i < m_ui.table->rowCount(); i++)
+    if(m_ui.table->item(i, 2)->text().isEmpty())
+      {
+	row = i;
+	break;
+      }
+
+  QApplication::restoreOverrideCursor();
+
+  if(row < 0)
     {
-      error = tr("Input must be readable.");
-      goto done_label;
-    }
-
-  fileInfo.setFile(mt);
-
-  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
-    {
-      error = tr("MT must be a readable executable.");
-      goto done_label;
-    }
-
-  fileInfo.setFile(tar);
-
-  if(!(fileInfo.isExecutable() && fileInfo.isReadable()))
-    {
-      error = tr("TAR must be a readable executable.");
+      error = tr("Please schedule some data.");
       goto done_label;
     }
 
   mb.setIcon(QMessageBox::Question);
   mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-  mb.setText(tr("Are you sure that you wish to store "
-		"the contents of %1?").arg(input));
+  mb.setText(tr("Are you sure that you wish to initiate a store operation?"));
   mb.setWindowTitle(tr("spinware: Confirmation"));
   mb.setWindowModality(Qt::WindowModal);
 
   if(mb.exec() != QMessageBox::Yes)
     return;
 
+  device = m_ui.table->item(row, 3)->text();
+  individual = m_ui.table->item(row, 1)->text().length() > 0;
+  input = m_ui.table->item(row, 0)->text();
   m_pid = 0;
+  m_storeOperation = true;
+  mt = m_ui.table->item(row, 4)->text();
+  tar = m_ui.table->item(row, 5)->text();
   m_future = QtConcurrent::run(this,
 			       &spinware_page::write,
 			       device,
 			       input,
 			       mt,
 			       tar,
-			       m_ui.individual->isChecked());
+			       individual);
   m_futureWatcher.setFuture(m_future);
 
  done_label:

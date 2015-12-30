@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>875</width>
-    <height>714</height>
+    <width>890</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -744,7 +744,63 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="schedule">
+            <property name="text">
+             <string>Schedule</string>
+            </property>
+           </widget>
+          </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="table">
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="horizontalScrollMode">
+           <enum>QAbstractItemView::ScrollPerPixel</enum>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>150</number>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string>Input</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Individual Files</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Completed</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Device</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>MT</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>TAR</string>
+           </property>
+          </column>
+         </widget>
         </item>
         <item>
          <widget class="QTextBrowser" name="store">
@@ -834,6 +890,43 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>abort</tabstop>
+  <tabstop>device</tabstop>
+  <tabstop>device_select</tabstop>
+  <tabstop>mt</tabstop>
+  <tabstop>mt_select</tabstop>
+  <tabstop>tar</tabstop>
+  <tabstop>tar_select</tabstop>
+  <tabstop>list</tabstop>
+  <tabstop>compute</tabstop>
+  <tabstop>export_invoice</tabstop>
+  <tabstop>list_list</tabstop>
+  <tabstop>operation</tabstop>
+  <tabstop>backward</tabstop>
+  <tabstop>eject</tabstop>
+  <tabstop>end</tabstop>
+  <tabstop>erase</tabstop>
+  <tabstop>forward</tabstop>
+  <tabstop>load</tabstop>
+  <tabstop>rewind</tabstop>
+  <tabstop>status</tabstop>
+  <tabstop>operations_custom_command</tabstop>
+  <tabstop>output</tabstop>
+  <tabstop>output_select</tabstop>
+  <tabstop>number</tabstop>
+  <tabstop>retrieve</tabstop>
+  <tabstop>read</tabstop>
+  <tabstop>input</tabstop>
+  <tabstop>input_select</tabstop>
+  <tabstop>compression_algorithms</tabstop>
+  <tabstop>individual</tabstop>
+  <tabstop>schedule</tabstop>
+  <tabstop>table</tabstop>
+  <tabstop>store</tabstop>
+  <tabstop>export_store</tabstop>
+  <tabstop>write</tabstop>
+ </tabstops>
  <resources>
   <include location="../Icons/icons.qrc"/>
   <include location="../Icons/icons.qrc"/>

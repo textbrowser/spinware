@@ -1,8 +1,9 @@
 2016.01.01
 
 1. Qt 5.x support.
-2. Tab pages.
-3. Tool buttons.
+2. Store-operation scheduler.
+3. Tab pages.
+4. Tool buttons.
 
 2015.09.25
 
@@ -14,7 +15,7 @@
 
 2015.06.12
 
-1. Archive single files if requested.
+1. Archive single files, if requested.
 2. Corrected duplicate compression algorithms.
 3. Extract the entire contents of the tape if File Number is set to 0
    during the retrieval process. Terminate upon cancellation or error.
