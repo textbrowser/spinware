@@ -354,7 +354,7 @@ void spinware_page::slotFutureFinished(void)
 	    m_ui.table->item(row, 2)->setText(tr("No"));
 	}
 
-      if(m_future.isCanceled())
+      if(m_future.isCanceled() || !m_future.result())
 	return;
 
       row = -1;
