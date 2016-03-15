@@ -1,5 +1,7 @@
 Qt 4.8.x and 5.x are supported.
-Linux and perhaps FreeBSD.
+FreeBSD and Linux.
 
 qmake -o Makefile spinware.pro
 gmake or make
+
+The product has also been tested on Debian PowerPC.
