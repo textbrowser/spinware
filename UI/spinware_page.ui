@@ -244,7 +244,7 @@
              <string>Export Display</string>
             </property>
             <property name="text">
-             <string>Invoice</string>
+             <string>Invoice...</string>
             </property>
             <property name="icon">
              <iconset resource="../Icons/icons.qrc">
@@ -880,7 +880,7 @@
              <string>Export Display</string>
             </property>
             <property name="text">
-             <string>Invoice</string>
+             <string>Invoice...</string>
             </property>
             <property name="icon">
              <iconset resource="../Icons/icons.qrc">
