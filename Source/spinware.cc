@@ -150,8 +150,10 @@ void spinware::slotCloseTab(int index)
 
 	  mb.setIcon(QMessageBox::Question);
 	  mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-	  mb.setText(tr("An operation is active. Are you sure that "
-			"you wish to close the page?"));
+	  mb.setText(tr("An operation is active. Closing the page "
+			"may not cancel the current operation. "
+			"Are you sure that "
+			"you wish to continue?"));
 	  mb.setWindowTitle(tr("spinware: Confirmation"));
 	  mb.setWindowModality(Qt::WindowModal);
 
