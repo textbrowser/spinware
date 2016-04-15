@@ -56,7 +56,7 @@ spinware::spinware(void):QMainWindow(0)
 	  SIGNAL(tabCloseRequested(int)),
 	  this,
 	  SLOT(slotCloseTab(int)));
-  m_ui.tab->setDocumentMode(true);
+  m_ui.tab->setDocumentMode(false);
   m_ui.tab->setStyleSheet
     ("QTabBar::tear {"
      "image: none;"
@@ -117,12 +117,21 @@ void spinware::closeEvent(QCloseEvent *event)
 
 void spinware::slotAbout(void)
 {
-  QMessageBox::information
-    (this, tr("spinware: Information"),
-     QString("Qt version %1.\n"
-	     "spinware: version %2, Guess Who.").
-     arg(QT_VERSION_STR).
-     arg(SPINWARE_VERSION_STR));
+  QMessageBox mb(this);
+  QPixmap pixmap(":/spinware.png");
+  QString str("");
+
+  pixmap = pixmap.scaled
+    (QSize(48, 48), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+  str = tr("Qt version %1.<br>"
+	   "spinware version %2, Guess Who.").
+    arg(QT_VERSION_STR).arg(SPINWARE_VERSION_STR);
+  mb.setIconPixmap(pixmap);
+  mb.setStandardButtons(QMessageBox::Ok);
+  mb.setText(str);
+  mb.setTextFormat(Qt::RichText);
+  mb.setWindowTitle(tr("spinware: About"));
+  mb.exec();
 }
 
 void spinware::slotCloseTab(int index)
