@@ -1,5 +1,5 @@
 Qt 4.8.x and 5.x are supported.
-FreeBSD and Linux.
+FreeBSD and Linux. On Linux, please install mt-st.
 
 qmake -o Makefile spinware.pro
 gmake or make
