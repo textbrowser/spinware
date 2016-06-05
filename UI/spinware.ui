@@ -63,6 +63,10 @@
    </property>
   </action>
   <action name="action_About">
+   <property name="icon">
+    <iconset resource="../Icons/icons.qrc">
+     <normaloff>:/spinware.png</normaloff>:/spinware.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;About...</string>
    </property>
