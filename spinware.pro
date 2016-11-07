@@ -2,7 +2,11 @@ purge.commands = rm -f *~ && rm -f */*~
 
 CONFIG		+= qt release thread warn_on
 LANGUAGE	= C++
-QT		+=
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+QT		+= concurrent widgets
+}
+
 TEMPLATE	= app
 
 QMAKE_CLEAN	+= spinware
