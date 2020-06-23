@@ -10,10 +10,24 @@ QT		+= concurrent widgets
 TEMPLATE	= app
 
 QMAKE_CLEAN	+= spinware
-QMAKE_CXXFLAGS_RELEASE += -Wall -Werror -Wextra \
-			  -Wpointer-arith -Wstack-protector \
+QMAKE_CXXFLAGS_RELEASE += -Wall \
+                          -Werror \
+                          -Wextra \
+                          -Wpointer-arith \
+                          -Wstack-protector \
 			  -Wstrict-overflow=5 \
-			  -fPIE -fstack-protector-all -fwrapv -pie
+                          -fPIE \
+                          -fstack-protector-all \
+                          -fwrapv \
+                          -pedantic \
+                          -pie \
+                          -std=c++11
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+QMAKE_CXXFLAGS_RELEASE += -Wconversion \
+                          -Wsign-conversion
+}
+
 QMAKE_EXTRA_TARGETS = purge
 
 INCLUDEPATH	+= Source
