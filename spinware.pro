@@ -11,12 +11,17 @@ TEMPLATE	= app
 
 QMAKE_CLEAN	+= spinware
 QMAKE_CXXFLAGS_RELEASE += -Wall \
+			  -Wconversion \
+                          -Wdouble-promotion \
                           -Werror \
                           -Wextra \
+                          -Wformat=2 \
                           -Wpointer-arith \
+                          -Wsign-conversion \
                           -Wstack-protector \
-			  -Wstrict-overflow=5 \
+                          -Wstrict-overflow=5 \
                           -fPIE \
+                          -fno-common \
                           -fstack-protector-all \
                           -fwrapv \
                           -pedantic \
