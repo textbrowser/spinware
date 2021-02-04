@@ -31,6 +31,7 @@ extern "C"
 #include <sys/types.h>
 }
 
+#include <QCoreApplication>
 #if QT_VERSION < 0x050000
 #include <QDesktopServices>
 #endif
