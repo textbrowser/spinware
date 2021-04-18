@@ -17,7 +17,6 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -Wextra \
                           -Wformat=2 \
                           -Wpointer-arith \
-                          -Wsign-conversion \
                           -Wstack-protector \
                           -Wstrict-overflow=5 \
                           -fPIE \
