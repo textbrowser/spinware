@@ -281,7 +281,11 @@ void spinware_page::slotExport(void)
     (QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).
      value(0));
 #endif
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   dialog.setConfirmOverwrite(true);
+#else
+  dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
+#endif
 
   if(dialog.exec() == QDialog::Accepted)
     {
@@ -649,8 +653,13 @@ void spinware_page::slotSelectExecutable(void)
   else
     dialog.selectFile(m_ui.tar->text());
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   dialog.setConfirmOverwrite(true);
   dialog.setFileMode(QFileDialog::ExistingFile);
+#else
+    dialog.setFileMode(QFileDialog::ExistingFile);
+  dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
+#endif
 
   if(dialog.exec() == QDialog::Accepted)
     {
