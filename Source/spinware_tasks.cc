@@ -157,7 +157,13 @@ bool spinware_page::operation(const QString &device,
   if(command.contains(" "))
     {
       emit status("operation", tr("Executing %1...").arg(command));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       process.start(command);
+#else
+      QStringList list(command.split(" ", Qt::SkipEmptyParts));
+
+      process.start(list.value(0), list.mid(1));
+#endif
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
 #else
