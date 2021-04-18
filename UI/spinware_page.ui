@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>924</width>
+    <width>931</width>
     <height>800</height>
    </rect>
   </property>
@@ -241,7 +241,7 @@
           <item>
            <widget class="QToolButton" name="export_invoice">
             <property name="toolTip">
-             <string>Export Display</string>
+             <string>Export List Results</string>
             </property>
             <property name="text">
              <string>Invoice...</string>
@@ -877,7 +877,7 @@
           <item>
            <widget class="QToolButton" name="export_store">
             <property name="toolTip">
-             <string>Export Display</string>
+             <string>Export Store Results</string>
             </property>
             <property name="text">
              <string>Invoice...</string>
