@@ -7,9 +7,26 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 QT		+= concurrent widgets
 }
 
-TEMPLATE	= app
-
 QMAKE_CLEAN	+= spinware
+
+freebsd-* {
+QMAKE_CXXFLAGS_RELEASE += -Wall \
+			  -Wconversion \
+                          -Wdouble-promotion \
+                          -Werror \
+                          -Wextra \
+                          -Wformat=2 \
+                          -Wpointer-arith \
+                          -Wsign-conversion \
+                          -Wstack-protector \
+                          -Wstrict-overflow=5 \
+                          -fPIE \
+                          -fno-common \
+                          -fstack-protector-all \
+                          -fwrapv \
+                          -pedantic \
+                          -std=c++11
+} else {
 QMAKE_CXXFLAGS_RELEASE += -Wall \
 			  -Wconversion \
                           -Wdouble-promotion \
@@ -27,6 +44,7 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -pedantic \
                           -pie \
                           -std=c++11
+}
 
 greaterThan(QT_MAJOR_VERSION, 4) {
 QMAKE_CXXFLAGS_RELEASE += -Wconversion \
@@ -52,3 +70,4 @@ SOURCES		= Source/spinware.cc \
 
 PROJECTNAME	= spinware
 TARGET		= spinware
+TEMPLATE	= app
