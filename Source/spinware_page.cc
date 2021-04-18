@@ -323,9 +323,9 @@ void spinware_page::slotFinished(const QString &operation, const bool ok)
   if(widget)
     {
       if(ok)
-	widget->append("<font color='green'>[SUCCESS]</font>");
+	widget->append(tr("<font color='green'>[SUCCESS]</font>"));
       else
-	widget->append("<font color='red'>[FAILURE]</font>");
+	widget->append(tr("<font color='red'>[FAILURE]</font>"));
     }
 }
 

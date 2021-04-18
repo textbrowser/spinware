@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 		<< __LINE__
 		<< QObject::tr(", file ").toStdString()
 		<< __FILE__
-		<< "."
+		<< QObject::tr(".").toStdString()
 		<< std::endl;
       exit(EXIT_FAILURE);
     }

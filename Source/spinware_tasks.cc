@@ -39,7 +39,7 @@ bool spinware_page::list(const QString &device,
   quint64 content_size = 0;
   quint64 number = 0;
 
-  emit status("list", QString("Loading %1...").arg(device));
+  emit status("list", tr("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
@@ -57,7 +57,7 @@ bool spinware_page::list(const QString &device,
   else
     emit finished("list", true);
 
-  emit status("list", QString("Rewinding %1...").arg(device));
+  emit status("list", tr("Rewinding %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "rewind");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
@@ -77,9 +77,9 @@ bool spinware_page::list(const QString &device,
 
   if(compute_content_size)
     emit status
-      ("list", QString("Computing content size of %1...").arg(device));
+      ("list", tr("Computing content size of %1...").arg(device));
   else
-    emit status("list", QString("Listing %1...").arg(device));
+    emit status("list", tr("Listing %1...").arg(device));
 
   do
     {
@@ -100,7 +100,7 @@ bool spinware_page::list(const QString &device,
 	    {
 	      number += 1;
 	      emit coloredStatus
-		("list", QString("***** File Number %1 *****").arg(number));
+		("list", tr("***** File Number %1 *****").arg(number));
 	    }
 
 	  QByteArray bytes(process.readAllStandardOutput());
@@ -111,9 +111,15 @@ bool spinware_page::list(const QString &device,
 	  QStringList list(QString(bytes.constData()).split('\n'));
 
 	  for(int i = 0; i < list.size(); i++)
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
 	    content_size += static_cast<quint64>
 	      (list.at(i).split(' ', QString::SkipEmptyParts).
 	       value(2).toLongLong());
+#else
+	  content_size += static_cast<quint64>
+	    (list.at(i).split(' ', Qt::SkipEmptyParts).
+	     value(2).toLongLong());
+#endif
 	}
       else
 	break;
@@ -136,7 +142,7 @@ bool spinware_page::list(const QString &device,
 
   emit finished("list", true);
   emit status
-    ("list", QString("Content size... %1 MiB.").
+    ("list", tr("Content size... %1 MiB.").
      arg(QString::number(static_cast<double> (content_size) /
 			 1048576.0, 'f', 1)));
   return true;
@@ -150,7 +156,7 @@ bool spinware_page::operation(const QString &device,
 
   if(command.contains(" "))
     {
-      emit status("operation", QString("Executing %1...").arg(command));
+      emit status("operation", tr("Executing %1...").arg(command));
       process.start(command);
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
@@ -160,7 +166,7 @@ bool spinware_page::operation(const QString &device,
     }
   else if(command == "bsfm")
     {
-      emit status("operation", "Executing status...");
+      emit status("operation", tr("Executing status..."));
       process.start(mt, QStringList() << "-f" << device << "status");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
@@ -184,7 +190,7 @@ bool spinware_page::operation(const QString &device,
 	return true;
       else if(str.contains("file number=1"))
 	{
-	  emit status("operation", "Executing rewind...");
+	  emit status("operation", tr("Executing rewind..."));
 	  process.start(mt, QStringList() << "-f" << device << "rewind");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
 	  m_pid = process.pid();
@@ -194,7 +200,7 @@ bool spinware_page::operation(const QString &device,
 	}
       else
 	{
-	  emit status("operation", QString("Executing %1...").arg(command));
+	  emit status("operation", tr("Executing %1...").arg(command));
 	  process.start
 	    (mt, QStringList() << "-f" << device << command << "2");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
@@ -206,7 +212,7 @@ bool spinware_page::operation(const QString &device,
     }
   else
     {
-      emit status("operation", QString("Executing %1...").arg(command));
+      emit status("operation", tr("Executing %1...").arg(command));
       process.start(mt, QStringList() << "-f" << device << command);
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
@@ -234,7 +240,7 @@ bool spinware_page::read(const QString &device,
 {
   QProcess process;
 
-  emit status("read", QString("Loading %1...").arg(device));
+  emit status("read", tr("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
@@ -254,7 +260,7 @@ bool spinware_page::read(const QString &device,
 
   if(number == 0)
     {
-      emit status("read", QString("Rewinding %1...").arg(device));
+      emit status("read", tr("Rewinding %1...").arg(device));
       process.start(mt, QStringList() << "-f" << device << "rewind");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
@@ -276,8 +282,7 @@ bool spinware_page::read(const QString &device,
     {
       emit status
 	("read",
-	 QString("Positioning %1 on file number %2...").
-	 arg(device).arg(number));
+	 tr("Positioning %1 on file number %2...").arg(device).arg(number));
       process.start
 	(mt, QStringList() << "-f" << device << "asf"
 	                   << QString::number(number - 1));
@@ -300,7 +305,7 @@ bool spinware_page::read(const QString &device,
 
   do
     {
-      emit status("read", QString("Retrieving %1 into %2...").arg(device).
+      emit status("read", tr("Retrieving %1 into %2...").arg(device).
 		  arg(output));
       process.start
 	(tar, QStringList() << "-C" << output << "-vxzf" << device);
@@ -514,7 +519,7 @@ bool spinware_page::write(const QString &device,
 {
   QProcess process;
 
-  emit status("write", QString("Loading %1...").arg(device));
+  emit status("write", tr("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
@@ -532,7 +537,7 @@ bool spinware_page::write(const QString &device,
   else
     emit finished("write", true);
 
-  emit status("write", "Executing eod...");
+  emit status("write", tr("Executing eod..."));
   process.start(mt, QStringList() << "-f" << device << "eod");
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
@@ -558,13 +563,12 @@ bool spinware_page::write(const QString &device,
 				     QDir::NoDotAndDotDot));
 
       emit status
-	("write",
-	 QString("Setting the working directory to %1...").arg(input));
+	("write", tr("Setting the working directory to %1...").arg(input));
       process.setWorkingDirectory(input);
 
       if(input != process.workingDirectory())
 	{
-	  emit status("write", "Unable to set the working directory.");
+	  emit status("write", tr("Unable to set the working directory."));
 	  emit finished("write", false);
 	  return false;
 	}
@@ -576,8 +580,8 @@ bool spinware_page::write(const QString &device,
 
 	  QString str(list.takeFirst());
 
-	  emit status("write", QString("Writing %1 into %2...").arg(str).
-		      arg(device));
+	  emit status
+	    ("write", tr("Writing %1 into %2...").arg(str).arg(device));
 	  process.start
 	    (tar, QStringList() << "-cvzf" << device
 	                        << str);
@@ -602,8 +606,7 @@ bool spinware_page::write(const QString &device,
     }
   else
     {
-      emit status("write", QString("Writing %1 into %2...").arg(input).
-		  arg(device));
+      emit status("write", tr("Writing %1 into %2...").arg(input).arg(device));
       process.start
 	(tar, QStringList() << "-C" << QFileInfo(input).path()
 	                    << "-cvzf" << device
