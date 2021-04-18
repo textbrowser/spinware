@@ -33,6 +33,11 @@
 
 int main(int argc, char *argv[])
 {
+#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
+  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+  QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+#endif
+
   QApplication qapplication(argc, argv);
 
   try
@@ -43,10 +48,12 @@ int main(int argc, char *argv[])
   catch(const std::bad_alloc &exception)
     {
       std::cerr << QObject::tr("Memory allocation error at line ").
-	toStdString()
+	           toStdString()
 		<< __LINE__
 		<< QObject::tr(", file ").toStdString()
-		<< __FILE__ << "." << std::endl;
+		<< __FILE__
+		<< "."
+		<< std::endl;
       exit(EXIT_FAILURE);
     }
 
