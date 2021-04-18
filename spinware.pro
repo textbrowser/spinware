@@ -56,8 +56,11 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
 }
 
 greaterThan(QT_MAJOR_VERSION, 4) {
+freebsd-* {
+} else {
 QMAKE_CXXFLAGS_RELEASE += -Wconversion \
                           -Wsign-conversion
+}
 }
 
 QMAKE_EXTRA_TARGETS = purge
