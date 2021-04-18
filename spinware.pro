@@ -11,7 +11,8 @@ QMAKE_CLEAN	+= spinware
 
 freebsd-* {
 QMAKE_CXXFLAGS_RELEASE += -Wall \
-			  -Wconversion \
+                          -Wcast-align \
+                          -Wcast-qual \
                           -Wdouble-promotion \
                           -Werror \
                           -Wextra \
@@ -19,6 +20,8 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -Wpointer-arith \
                           -Wstack-protector \
                           -Wstrict-overflow=5 \
+                          -Wundef \
+                          -Wzero-as-null-pointer-constant \
                           -fPIE \
                           -fno-common \
                           -fstack-protector-all \
@@ -27,15 +30,22 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -std=c++11
 } else {
 QMAKE_CXXFLAGS_RELEASE += -Wall \
+                          -Wcast-align \
+                          -Wcast-qual \
 			  -Wconversion \
                           -Wdouble-promotion \
                           -Werror \
                           -Wextra \
+                          -Wformat-overflow=2 \
+                          -Wformat-truncation=2 \
                           -Wformat=2 \
+                          -Wlogical-op \
                           -Wpointer-arith \
                           -Wsign-conversion \
                           -Wstack-protector \
                           -Wstrict-overflow=5 \
+                          -Wzero-as-null-pointer-constant \
+                          -Wundef \
                           -fPIE \
                           -fno-common \
                           -fstack-protector-all \

@@ -37,7 +37,7 @@ extern "C"
 #include "spinware.h"
 #include "spinware_page.h"
 
-spinware::spinware(void):QMainWindow(0)
+spinware::spinware(void):QMainWindow(nullptr)
 {
   m_ui.setupUi(this);
   connect(m_ui.action_About,

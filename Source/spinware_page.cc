@@ -208,7 +208,7 @@ void spinware_page::appendStatus(const QColor &color,
   if(status.trimmed().isEmpty())
     return;
 
-  QTextEdit *widget = 0;
+  QTextEdit *widget = nullptr;
 
   if(operation == "list")
     widget = m_ui.list;
@@ -304,7 +304,7 @@ void spinware_page::slotExport(void)
 
 void spinware_page::slotFinished(const QString &operation, const bool ok)
 {
-  QTextEdit *widget = 0;
+  QTextEdit *widget = nullptr;
 
   if(operation == "list")
     widget = m_ui.list;
@@ -531,7 +531,7 @@ void spinware_page::slotSchedule(void)
   QString error("");
   QString mt(m_ui.mt->text());
   QString tar(m_ui.tar->text());
-  QTableWidgetItem *item = 0;
+  QTableWidgetItem *item = nullptr;
   int row = -1;
 
   if(!fileInfo.isWritable())
