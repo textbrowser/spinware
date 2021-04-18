@@ -41,7 +41,11 @@ bool spinware_page::list(const QString &device,
 
   emit status("list", QString("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
+#else
+  m_pid = process.processId();
+#endif
   process.waitForFinished(-1);
 
   if(process.exitCode() != 0)
@@ -55,7 +59,11 @@ bool spinware_page::list(const QString &device,
 
   emit status("list", QString("Rewinding %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "rewind");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
+#else
+  m_pid = process.processId();
+#endif
   process.waitForFinished(-1);
 
   if(process.exitCode() != 0)
@@ -79,7 +87,11 @@ bool spinware_page::list(const QString &device,
 	break;
 
       process.start(tar, QStringList() << "-tvzf" << device);
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
@@ -107,7 +119,11 @@ bool spinware_page::list(const QString &device,
 	break;
 
       process.start(mt, QStringList() << "-f" << device << "status");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
@@ -136,13 +152,21 @@ bool spinware_page::operation(const QString &device,
     {
       emit status("operation", QString("Executing %1...").arg(command));
       process.start(command);
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
     }
   else if(command == "bsfm")
     {
       emit status("operation", "Executing status...");
       process.start(mt, QStringList() << "-f" << device << "status");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() != 0)
@@ -162,21 +186,33 @@ bool spinware_page::operation(const QString &device,
 	{
 	  emit status("operation", "Executing rewind...");
 	  process.start(mt, QStringList() << "-f" << device << "rewind");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
 	  m_pid = process.pid();
+#else
+	  m_pid = process.processId();
+#endif
 	}
       else
 	{
 	  emit status("operation", QString("Executing %1...").arg(command));
 	  process.start
 	    (mt, QStringList() << "-f" << device << command << "2");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
 	  m_pid = process.pid();
+#else
+	  m_pid = process.processId();
+#endif
 	}
     }
   else
     {
       emit status("operation", QString("Executing %1...").arg(command));
       process.start(mt, QStringList() << "-f" << device << command);
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
     }
 
   process.waitForFinished(-1);
@@ -200,7 +236,11 @@ bool spinware_page::read(const QString &device,
 
   emit status("read", QString("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
+#else
+  m_pid = process.processId();
+#endif
   process.waitForFinished(-1);
 
   if(process.exitCode() != 0)
@@ -216,7 +256,11 @@ bool spinware_page::read(const QString &device,
     {
       emit status("read", QString("Rewinding %1...").arg(device));
       process.start(mt, QStringList() << "-f" << device << "rewind");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
@@ -237,7 +281,11 @@ bool spinware_page::read(const QString &device,
       process.start
 	(mt, QStringList() << "-f" << device << "asf"
 	                   << QString::number(number - 1));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
@@ -256,7 +304,11 @@ bool spinware_page::read(const QString &device,
 		  arg(output));
       process.start
 	(tar, QStringList() << "-C" << output << "-vxzf" << device);
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() != 0)
@@ -270,7 +322,11 @@ bool spinware_page::read(const QString &device,
 	break;
 
       process.start(mt, QStringList() << "-f" << device << "status");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)
@@ -460,7 +516,11 @@ bool spinware_page::write(const QString &device,
 
   emit status("write", QString("Loading %1...").arg(device));
   process.start(mt, QStringList() << "-f" << device << "load");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
+#else
+  m_pid = process.processId();
+#endif
   process.waitForFinished(-1);
 
   if(process.exitCode() != 0)
@@ -474,7 +534,11 @@ bool spinware_page::write(const QString &device,
 
   emit status("write", "Executing eod...");
   process.start(mt, QStringList() << "-f" << device << "eod");
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   m_pid = process.pid();
+#else
+  m_pid = process.processId();
+#endif
   process.waitForFinished(-1);
 
   if(process.exitCode() != 0)
@@ -517,7 +581,11 @@ bool spinware_page::write(const QString &device,
 	  process.start
 	    (tar, QStringList() << "-cvzf" << device
 	                        << str);
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
 	  m_pid = process.pid();
+#else
+	  m_pid = process.processId();
+#endif
 	  process.waitForFinished(-1);
 
 	  if(process.exitCode() != 0)
@@ -540,7 +608,11 @@ bool spinware_page::write(const QString &device,
 	(tar, QStringList() << "-C" << QFileInfo(input).path()
 	                    << "-cvzf" << device
 	                    << QFileInfo(input).fileName());
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       m_pid = process.pid();
+#else
+      m_pid = process.processId();
+#endif
       process.waitForFinished(-1);
 
       if(process.exitCode() == 0)

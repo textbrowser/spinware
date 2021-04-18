@@ -226,7 +226,8 @@ void spinware_page::appendStatus(const QColor &color,
 
   if(color.isValid())
     widget->append
-      (QString("<font color='%1'>%2</font>").arg(color.name()).
+      (QString("<font color='%1'>%2</font>").
+       arg(color.name()).
        arg(status.trimmed()));
   else
     widget->append(status.trimmed());
