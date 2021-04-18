@@ -615,7 +615,11 @@ void spinware_page::slotSelectDirectory(void)
   else
     {
       dialog.selectFile(m_ui.output->text());
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       dialog.setConfirmOverwrite(true);
+#else
+      dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
+#endif
     }
 
   if(m_ui.input_select == pushButton)
@@ -657,7 +661,7 @@ void spinware_page::slotSelectExecutable(void)
   dialog.setConfirmOverwrite(true);
   dialog.setFileMode(QFileDialog::ExistingFile);
 #else
-    dialog.setFileMode(QFileDialog::ExistingFile);
+  dialog.setFileMode(QFileDialog::ExistingFile);
   dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
 #endif
 
