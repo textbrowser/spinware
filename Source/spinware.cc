@@ -62,8 +62,7 @@ spinware::spinware(void):QMainWindow(nullptr)
      "image: none;"
      "}");
 
-  foreach(QToolButton *toolButton,
-	  m_ui.tab->findChildren <QToolButton *> ())
+  foreach(auto toolButton, m_ui.tab->findChildren <QToolButton *> ())
     toolButton->setStyleSheet("QToolButton {background-color: white; "
 			      "border: 1px solid #c4c4c3; "
 			      "margin-bottom: 0px;"
