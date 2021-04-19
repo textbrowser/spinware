@@ -292,7 +292,8 @@ void spinware_page::slotExport(void)
     {
       QFile file(dialog.selectedFiles().value(0));
 
-      if(file.open(QIODevice::Text | QIODevice::Truncate |
+      if(file.open(QIODevice::Text |
+		   QIODevice::Truncate |
 		   QIODevice::WriteOnly))
 	{
 	  if(m_ui.export_invoice == sender())
@@ -377,11 +378,11 @@ void spinware_page::slotFutureFinished(void)
 
       if(row > -1)
 	{
-	  QString device(m_ui.table->item(row, 3)->text());
-	  QString input(m_ui.table->item(row, 0)->text());
-	  QString mt(m_ui.table->item(row, 4)->text());
-	  QString tar(m_ui.table->item(row, 5)->text());
-	  bool individual = false;
+	  auto device(m_ui.table->item(row, 3)->text());
+	  auto individual = false;
+	  auto input(m_ui.table->item(row, 0)->text());
+	  auto mt(m_ui.table->item(row, 4)->text());
+	  auto tar(m_ui.table->item(row, 5)->text());
 
 	  individual = m_ui.table->item(row, 1)->text().length() > 0;
 	  m_pid = 0;
@@ -469,12 +470,12 @@ void spinware_page::slotHighlightPaths(void)
 void spinware_page::slotRead(void)
 {
   QFileInfo fileInfo(m_ui.device->text());
-  QString device(m_ui.device->text());
   QString error("");
-  QString mt(m_ui.mt->text());
-  QString output(m_ui.output->text());
-  QString tar(m_ui.tar->text());
-  int number = m_ui.number->value();
+  auto device(m_ui.device->text());
+  auto mt(m_ui.mt->text());
+  auto number = m_ui.number->value();
+  auto output(m_ui.output->text());
+  auto tar(m_ui.tar->text());
 
   if(!m_future.isFinished())
     {
@@ -532,11 +533,11 @@ void spinware_page::slotRead(void)
 void spinware_page::slotSchedule(void)
 {
   QFileInfo fileInfo(m_ui.device->text());
-  QString device(m_ui.device->text());
   QString error("");
-  QString mt(m_ui.mt->text());
-  QString tar(m_ui.tar->text());
   QTableWidgetItem *item = nullptr;
+  auto device(m_ui.device->text());
+  auto mt(m_ui.mt->text());
+  auto tar(m_ui.tar->text());
   int row = -1;
 
   if(!fileInfo.isWritable())
@@ -600,7 +601,7 @@ void spinware_page::slotSchedule(void)
 
 void spinware_page::slotSelectDirectory(void)
 {
-  QPushButton *pushButton = qobject_cast<QPushButton *> (sender());
+  auto pushButton = qobject_cast<QPushButton *> (sender());
 
   if(!(m_ui.input_select == pushButton ||
        m_ui.output_select == pushButton))
@@ -642,7 +643,7 @@ void spinware_page::slotSelectDirectory(void)
 
 void spinware_page::slotSelectExecutable(void)
 {
-  QPushButton *pushButton = qobject_cast<QPushButton *> (sender());
+  auto pushButton = qobject_cast<QPushButton *> (sender());
 
   if(!(m_ui.device_select == pushButton ||
        m_ui.mt_select == pushButton ||
@@ -691,7 +692,7 @@ void spinware_page::slotStore(void)
   QString input("");
   QString mt("");
   QString tar("");
-  bool individual = false;
+  auto individual = false;
   int row = -1;
 
   if(!m_future.isFinished())

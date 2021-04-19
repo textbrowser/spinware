@@ -83,9 +83,9 @@ void spinware::closeEvent(QCloseEvent *event)
 {
   if(event)
     {
-      bool prompt = false;
+      auto prompt = false;
 
-      foreach(spinware_page *page, findChildren<spinware_page *> ())
+      foreach(auto page, findChildren<spinware_page *> ())
 	if(!page->isFinished())
 	  {
 	    prompt = true;
@@ -136,9 +136,8 @@ void spinware::slotAbout(void)
 
 void spinware::slotCloseTab(int index)
 {
-  int count = m_ui.tab->count();
-  spinware_page *page =
-    qobject_cast<spinware_page *> (m_ui.tab->widget(index));
+  auto count = m_ui.tab->count();
+  auto page = qobject_cast<spinware_page *> (m_ui.tab->widget(index));
 
   if(page)
     {
@@ -173,7 +172,7 @@ void spinware::slotCloseTab(int index)
 
 void spinware::slotNewPage(void)
 {
-  spinware_page *page = new (std::nothrow) spinware_page(this);
+  auto page = new (std::nothrow) spinware_page(this);
 
   if(page)
     {
