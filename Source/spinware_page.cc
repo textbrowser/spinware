@@ -167,6 +167,7 @@ spinware_page::spinware_page(QWidget *parent):QWidget(parent)
   QStringList list;
 
   list << "/bin/gzip"
+       << "/usr/bin/gzip"
        << "/usr/local/gzip";
 
   for(int i = 0; i < list.size(); i++)
