@@ -246,7 +246,7 @@ void spinware_page::slotAbort(void)
   mb.setText(tr("Are you sure that you wish to interrupt "
 		"the current operation?"));
   mb.setWindowTitle(tr("spinware: Confirmation"));
-  mb.setWindowModality(Qt::WindowModal);
+  mb.setWindowModality(Qt::ApplicationModal);
 
   if(mb.exec() != QMessageBox::Yes)
     return;
@@ -723,7 +723,7 @@ void spinware_page::slotStore(void)
   mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
   mb.setText(tr("Are you sure that you wish to initiate a store operation?"));
   mb.setWindowTitle(tr("spinware: Confirmation"));
-  mb.setWindowModality(Qt::WindowModal);
+  mb.setWindowModality(Qt::ApplicationModal);
 
   if(mb.exec() != QMessageBox::Yes)
     return;

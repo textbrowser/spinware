@@ -481,7 +481,7 @@ void spinware_page::slotOperation(void)
 	  mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
 	  mb.setText(list.at(i));
 	  mb.setWindowTitle(tr("spinware: Confirmation"));
-	  mb.setWindowModality(Qt::WindowModal);
+	  mb.setWindowModality(Qt::ApplicationModal);
 
 	  if(mb.exec() != QMessageBox::Yes)
 	    return;
@@ -496,7 +496,7 @@ void spinware_page::slotOperation(void)
       mb.setText(tr("Are you sure that you wish to execute "
 		    "the specified command?"));
       mb.setWindowTitle(tr("spinware: Confirmation"));
-      mb.setWindowModality(Qt::WindowModal);
+      mb.setWindowModality(Qt::ApplicationModal);
 
       if(mb.exec() != QMessageBox::Yes)
 	return;

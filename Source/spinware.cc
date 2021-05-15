@@ -100,7 +100,7 @@ void spinware::closeEvent(QCloseEvent *event)
 	  mb.setText(tr("One or more operations are active. "
 			"Are you sure that you wish to exit?"));
 	  mb.setWindowTitle(tr("spinware: Confirmation"));
-	  mb.setWindowModality(Qt::WindowModal);
+	  mb.setWindowModality(Qt::ApplicationModal);
 
 	  if(mb.exec() != QMessageBox::Yes)
 	    {
@@ -153,7 +153,7 @@ void spinware::slotCloseTab(int index)
 			"Are you sure that "
 			"you wish to continue?"));
 	  mb.setWindowTitle(tr("spinware: Confirmation"));
-	  mb.setWindowModality(Qt::WindowModal);
+	  mb.setWindowModality(Qt::ApplicationModal);
 
 	  if(mb.exec() != QMessageBox::Yes)
 	    return;
