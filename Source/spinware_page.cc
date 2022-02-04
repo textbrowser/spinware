@@ -388,6 +388,7 @@ void spinware_page::slotFutureFinished(void)
 	  individual = m_ui.table->item(row, 1)->text().length() > 0;
 	  m_pid = 0;
 	  m_storeOperation = true;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 	  m_future = QtConcurrent::run(this,
 				       &spinware_page::write,
 				       device,
@@ -395,6 +396,15 @@ void spinware_page::slotFutureFinished(void)
 				       mt,
 				       tar,
 				       individual);
+#else
+	  m_future = QtConcurrent::run(&spinware_page::write,
+				       this,
+				       device,
+				       input,
+				       mt,
+				       tar,
+				       individual);
+#endif
 	  m_futureWatcher.setFuture(m_future);
 	}
     }
@@ -516,6 +526,7 @@ void spinware_page::slotRead(void)
 
   m_pid = 0;
   m_storeOperation = false;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   m_future = QtConcurrent::run(this,
 			       &spinware_page::read,
 			       device,
@@ -523,6 +534,15 @@ void spinware_page::slotRead(void)
 			       output,
 			       tar,
 			       number);
+#else
+  m_future = QtConcurrent::run(&spinware_page::read,
+			       this,
+			       device,
+			       mt,
+			       output,
+			       tar,
+			       number);
+#endif
   m_futureWatcher.setFuture(m_future);
 
  done_label:
@@ -735,6 +755,7 @@ void spinware_page::slotStore(void)
   m_storeOperation = true;
   mt = m_ui.table->item(row, 4)->text();
   tar = m_ui.table->item(row, 5)->text();
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   m_future = QtConcurrent::run(this,
 			       &spinware_page::write,
 			       device,
@@ -742,6 +763,15 @@ void spinware_page::slotStore(void)
 			       mt,
 			       tar,
 			       individual);
+#else
+  m_future = QtConcurrent::run(&spinware_page::write,
+			       this,
+			       device,
+			       input,
+			       mt,
+			       tar,
+			       individual);
+#endif
   m_futureWatcher.setFuture(m_future);
 
  done_label:

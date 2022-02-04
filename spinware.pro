@@ -19,7 +19,7 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -Wformat=2 \
                           -Wpointer-arith \
                           -Wstack-protector \
-                          -Wstrict-overflow=5 \
+                          -Wstrict-overflow=1 \
                           -Wundef \
                           -Wzero-as-null-pointer-constant \
                           -fPIE \
@@ -32,16 +32,14 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
 QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -Wcast-align \
                           -Wcast-qual \
-			  -Wconversion \
                           -Wdouble-promotion \
                           -Werror \
                           -Wextra \
                           -Wformat=2 \
                           -Wlogical-op \
                           -Wpointer-arith \
-                          -Wsign-conversion \
                           -Wstack-protector \
-                          -Wstrict-overflow=5 \
+                          -Wstrict-overflow=1 \
                           -Wundef \
                           -fPIE \
                           -fno-common \
@@ -55,8 +53,6 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
 greaterThan(QT_MAJOR_VERSION, 4) {
 freebsd-* {
 } else {
-QMAKE_CXXFLAGS_RELEASE += -Wconversion \
-                          -Wsign-conversion
 }
 }
 

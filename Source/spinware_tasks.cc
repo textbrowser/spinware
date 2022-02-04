@@ -389,12 +389,21 @@ void spinware_page::slotList(void)
 
   m_pid = 0;
   m_storeOperation = false;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   m_future = QtConcurrent::run(this,
 			       &spinware_page::list,
 			       device,
 			       mt,
 			       tar,
 			       m_ui.compute == sender());
+#else
+  m_future = QtConcurrent::run(&spinware_page::list,
+			       this,
+			       device,
+			       mt,
+			       tar,
+			       m_ui.compute == sender());
+#endif
   m_futureWatcher.setFuture(m_future);
 
  done_label:
@@ -504,11 +513,19 @@ void spinware_page::slotOperation(void)
 
   m_pid = 0;
   m_storeOperation = false;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   m_future = QtConcurrent::run(this,
 			       &spinware_page::operation,
 			       device,
 			       mt,
 			       command);
+#else
+  m_future = QtConcurrent::run(&spinware_page::operation,
+			       this,
+			       device,
+			       mt,
+			       command);
+#endif
   m_futureWatcher.setFuture(m_future);
 
  done_label:
