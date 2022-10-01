@@ -33,6 +33,7 @@ extern "C"
 
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QShortcut>
 
 #include "spinware.h"
 #include "spinware_page.h"
@@ -61,6 +62,10 @@ spinware::spinware(void):QMainWindow(nullptr)
     ("QTabBar::tear {"
      "image: none;"
      "}");
+  m_ui.tab->setTabsClosable(true);
+  new QShortcut(tr("Ctrl+W"),
+		this,
+		SLOT(slotCloseTab(void)));
 
   foreach(auto toolButton, m_ui.tab->findChildren <QToolButton *> ())
     toolButton->setStyleSheet("QToolButton {background-color: white; "
@@ -135,7 +140,6 @@ void spinware::slotAbout(void)
 
 void spinware::slotCloseTab(int index)
 {
-  auto count = m_ui.tab->count();
   auto page = qobject_cast<spinware_page *> (m_ui.tab->widget(index));
 
   if(page)
@@ -159,14 +163,13 @@ void spinware::slotCloseTab(int index)
 	    return;
 	}
 
-      count -= 1;
       page->deleteLater();
     }
+}
 
-  if(count < 2)
-    m_ui.tab->setTabsClosable(false);
-  else
-    m_ui.tab->setTabsClosable(true);
+void spinware::slotCloseTab(void)
+{
+  slotCloseTab(m_ui.tab->currentIndex());
 }
 
 void spinware::slotNewPage(void)
@@ -174,14 +177,7 @@ void spinware::slotNewPage(void)
   auto page = new (std::nothrow) spinware_page(this);
 
   if(page)
-    {
-      m_ui.tab->addTab(page, QIcon(":/spinware.png"), tr("Page"));
-
-      if(m_ui.tab->count() > 1)
-	m_ui.tab->setTabsClosable(true);
-      else
-	m_ui.tab->setTabsClosable(false);
-    }
+    m_ui.tab->addTab(page, QIcon(":/spinware.png"), tr("Page"));
   else
     QMessageBox::critical(this,
 			  tr("spinware: Error"),

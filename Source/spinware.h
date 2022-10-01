@@ -32,7 +32,7 @@
 
 #include "ui_spinware.h"
 
-#define SPINWARE_VERSION_STR "2022.02.03"
+#define SPINWARE_VERSION_STR "2022.10.01"
 
 class spinware: public QMainWindow
 {
@@ -49,6 +49,7 @@ class spinware: public QMainWindow
  private slots:
   void slotAbout(void);
   void slotCloseTab(int index);
+  void slotCloseTab(void);
   void slotNewPage(void);
   void slotQuit(void);
 };
