@@ -21,8 +21,8 @@ fi
 make distclean 2>/dev/null
 mkdir -p ./usr/local/spinware
 qmake -o Makefile spinware.pro && make -j $(nproc)
-cp -p ./Spinware ./usr/local/spinware/.
 cp -p ./Icons/spinware.png ./usr/local/spinware/.
+cp -p ./spinware ./usr/local/spinware/.
 cp -p ./spinware.sh ./usr/local/spinware/.
 
 # Preparing Spinware-x.deb:
