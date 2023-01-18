@@ -9,6 +9,10 @@ QT		+= concurrent widgets
 
 QMAKE_CLEAN	+= spinware
 
+contains(QMAKE_HOST.arch, ppc) {
+QMAKE_CXXFLAGS_RELEASE += -mcpu=powerpc -mtune=powerpc
+}
+
 freebsd-* {
 QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -Wcast-align \
