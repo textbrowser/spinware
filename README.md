@@ -1,4 +1,4 @@
-Qt 4.8.x, 5.x, and 6 LTS are supported.
+Qt 4.8.7, 5.15 LTS, 6.2 LTS, and Qt 6.5 LTS are supported.
 
 FreeBSD and Linux. On Linux, please install mt-st.
 

@@ -60,6 +60,11 @@ freebsd-* {
 }
 }
 
+greaterThan(QT_MAJOR_VERSION, 5) {
+QMAKE_CXXFLAGS_RELEASE += -std=c++17
+QMAKE_CXXFLAGS_RELEASE -= -std=c++11
+}
+
 QMAKE_EXTRA_TARGETS = purge
 
 INCLUDEPATH	+= Source
