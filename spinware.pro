@@ -32,7 +32,7 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -fwrapv \
                           -pedantic \
                           -std=c++11
-} else {
+} else:linux {
 QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -Wcast-align \
                           -Wcast-qual \
@@ -51,6 +51,24 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -fwrapv \
                           -pedantic \
                           -pie \
+                          -std=c++11
+} else {
+QMAKE_CXXFLAGS_RELEASE += -Wall \
+                          -Wcast-align \
+                          -Wcast-qual \
+                          -Wdouble-promotion \
+                          -Werror \
+                          -Wextra \
+                          -Wformat=2 \
+                          -Wpointer-arith \
+                          -Wstack-protector \
+                          -Wstrict-overflow=1 \
+                          -Wundef \
+                          -fPIE \
+                          -fno-common \
+                          -fstack-protector-all \
+                          -fwrapv \
+                          -pedantic \
                           -std=c++11
 }
 
