@@ -379,11 +379,11 @@ void spinware_page::slotFutureFinished(void)
 
       if(row > -1)
 	{
-	  auto device(m_ui.table->item(row, 3)->text());
+	  auto const device(m_ui.table->item(row, 3)->text());
+	  auto const input(m_ui.table->item(row, 0)->text());
+	  auto const mt(m_ui.table->item(row, 4)->text());
+	  auto const tar(m_ui.table->item(row, 5)->text());
 	  auto individual = false;
-	  auto input(m_ui.table->item(row, 0)->text());
-	  auto mt(m_ui.table->item(row, 4)->text());
-	  auto tar(m_ui.table->item(row, 5)->text());
 
 	  individual = m_ui.table->item(row, 1)->text().length() > 0;
 	  m_pid = 0;
@@ -482,11 +482,11 @@ void spinware_page::slotRead(void)
 {
   QFileInfo fileInfo(m_ui.device->text());
   QString error("");
-  auto device(m_ui.device->text());
-  auto mt(m_ui.mt->text());
-  auto number = m_ui.number->value();
-  auto output(m_ui.output->text());
-  auto tar(m_ui.tar->text());
+  auto const device(m_ui.device->text());
+  auto const mt(m_ui.mt->text());
+  auto const number = m_ui.number->value();
+  auto const output(m_ui.output->text());
+  auto const tar(m_ui.tar->text());
 
   if(!m_future.isFinished())
     {
@@ -556,9 +556,9 @@ void spinware_page::slotSchedule(void)
   QFileInfo fileInfo(m_ui.device->text());
   QString error("");
   QTableWidgetItem *item = nullptr;
-  auto device(m_ui.device->text());
-  auto mt(m_ui.mt->text());
-  auto tar(m_ui.tar->text());
+  auto const device(m_ui.device->text());
+  auto const mt(m_ui.mt->text());
+  auto const tar(m_ui.tar->text());
   int row = -1;
 
   if(!fileInfo.isWritable())

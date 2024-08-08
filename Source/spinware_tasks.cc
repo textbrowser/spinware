@@ -103,12 +103,12 @@ bool spinware_page::list(const QString &device,
 		("list", tr("***** File Number %1 *****").arg(number));
 	    }
 
-	  auto bytes(process.readAllStandardOutput());
+	  auto const bytes(process.readAllStandardOutput());
 
 	  if(!compute_content_size)
 	    emit status("list", bytes);
 
-	  auto list(QString(bytes.constData()).split('\n'));
+	  auto const list(QString(bytes.constData()).split('\n'));
 
 	  for(int i = 0; i < list.size(); i++)
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
@@ -116,9 +116,9 @@ bool spinware_page::list(const QString &device,
 	      (list.at(i).split(' ', QString::SkipEmptyParts).
 	       value(2).toLongLong());
 #else
-	  content_size += static_cast<quint64>
-	    (list.at(i).split(' ', Qt::SkipEmptyParts).
-	     value(2).toLongLong());
+	    content_size += static_cast<quint64>
+	      (list.at(i).split(' ', Qt::SkipEmptyParts).
+	       value(2).toLongLong());
 #endif
 	}
       else
@@ -160,7 +160,7 @@ bool spinware_page::operation(const QString &device,
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       process.start(command);
 #else
-      auto list(command.split(" ", Qt::SkipEmptyParts));
+      auto const list(command.split(" ", Qt::SkipEmptyParts));
 
       process.start(list.value(0), list.mid(1));
 #endif
@@ -190,7 +190,7 @@ bool spinware_page::operation(const QString &device,
       else
 	emit finished("operation", true);
 
-      auto str(process.readAllStandardOutput().toLower());
+      auto const str(process.readAllStandardOutput().toLower());
 
       if(str.contains("file number=0"))
 	return true;
@@ -355,9 +355,9 @@ void spinware_page::slotList(void)
 {
   QFileInfo fileInfo(m_ui.device->text());
   QString error("");
-  auto device(m_ui.device->text());
-  auto mt(m_ui.mt->text());
-  auto tar(m_ui.tar->text());
+  auto const device(m_ui.device->text());
+  auto const mt(m_ui.mt->text());
+  auto const tar(m_ui.tar->text());
 
   if(!m_future.isFinished())
     {
@@ -450,8 +450,8 @@ void spinware_page::slotOperation(void)
 
   QFileInfo fileInfo(m_ui.device->text());
   QString error("");
-  auto device(m_ui.device->text());
-  auto mt(m_ui.mt->text());
+  auto const device(m_ui.device->text());
+  auto const mt(m_ui.mt->text());
 
   if(!m_future.isFinished())
     {
@@ -580,11 +580,6 @@ bool spinware_page::write(const QString &device,
 
   if(QFileInfo(input).isDir() && individual)
     {
-      QDir dir(input);
-      auto list(dir.entryList(QDir::AllDirs |
-			      QDir::Files |
-			      QDir::NoDotAndDotDot));
-
       emit status
 	("write", tr("Setting the working directory to %1...").arg(input));
       process.setWorkingDirectory(input);
@@ -596,18 +591,21 @@ bool spinware_page::write(const QString &device,
 	  return false;
 	}
 
-      while(!list.isEmpty())
+      QDir dir(input);
+      auto const list(dir.entryList(QDir::AllDirs |
+				    QDir::Files |
+				    QDir::NoDotAndDotDot));
+
+      for(int i = 0; i < list.size(); i++)
 	{
 	  if(m_future.isCanceled())
 	    break;
 
-	  auto str(list.takeFirst());
+	  auto const str(list.at(i));
 
 	  emit status
 	    ("write", tr("Writing %1 into %2...").arg(str).arg(device));
-	  process.start
-	    (tar, QStringList() << "-cvzf" << device
-	                        << str);
+	  process.start(tar, QStringList() << "-cvzf" << device << str);
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
 	  m_pid = process.pid();
 #else
