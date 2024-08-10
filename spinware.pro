@@ -41,6 +41,7 @@ QMAKE_CXXFLAGS_RELEASE += -Wall \
                           -Wextra \
                           -Wformat=2 \
                           -Wlogical-op \
+                          -Wold-style-cast \
                           -Wpointer-arith \
                           -Wstack-protector \
                           -Wstrict-overflow=1 \
