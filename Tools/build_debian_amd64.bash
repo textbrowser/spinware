@@ -30,7 +30,7 @@ cp -p ./spinware.sh ./usr/local/spinware/.
 mkdir -p spinware-debian/usr/local
 cp -pr ./DEBIAN spinware-debian/.
 cp -r ./usr/local/spinware spinware-debian/usr/local/.
-fakeroot dpkg-deb --build spinware-debian Spinware-2022.10.15_amd64.deb
+fakeroot dpkg-deb --build spinware-debian Spinware-2024.08.15_amd64.deb
 rm -fr ./usr
 rm -fr spinware-debian
 make distclean
