@@ -172,7 +172,7 @@ spinware_page::spinware_page(QWidget *parent):QWidget(parent)
 
   for(int i = 0; i < list.size(); i++)
     {
-      QFileInfo fileInfo(list.at(i));
+      QFileInfo const fileInfo(list.at(i));
 
       if(fileInfo.isExecutable() && fileInfo.isReadable())
 	m_ui.compression_algorithms->addItem(list.at(i));
@@ -431,7 +431,7 @@ void spinware_page::slotHighlightPaths(void)
       QColor approved(144, 238, 144);
       QColor color;
       QColor declined(240, 128, 128);
-      QFileInfo fileInfo(widgets.at(i)->text());
+      QFileInfo const fileInfo(widgets.at(i)->text());
       QPalette palette;
 
       if(m_ui.device == widgets.at(i))
