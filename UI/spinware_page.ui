@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
+    <width>1000</width>
     <height>800</height>
    </rect>
   </property>
@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>955</width>
-        <height>899</height>
+        <y>-184</y>
+        <width>1069</width>
+        <height>951</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -114,6 +114,9 @@
             <property name="text">
              <string>/dev/nst0</string>
             </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="0" column="2">
@@ -138,6 +141,9 @@
             <property name="text">
              <string>/bin/mt</string>
             </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="1" column="2">
@@ -161,6 +167,9 @@
            <widget class="QLineEdit" name="tar">
             <property name="text">
              <string>/bin/tar</string>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -576,6 +585,9 @@
                 <property name="toolTip">
                  <string>Please press the Enter key to execute.</string>
                 </property>
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
              </layout>
@@ -623,7 +635,11 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="output"/>
+               <widget class="QLineEdit" name="output">
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QPushButton" name="output_select">
@@ -764,7 +780,11 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="input"/>
+               <widget class="QLineEdit" name="input">
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QPushButton" name="input_select">

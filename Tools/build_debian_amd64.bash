@@ -3,7 +3,7 @@
 
 if [ ! -x /usr/bin/dpkg-deb ]; then
     echo "Please install dpkg-deb."
-    exit
+    exit 1
 fi
 
 if [ ! -x /usr/bin/fakeroot ]; then
@@ -16,21 +16,21 @@ if [ ! -r spinware.pro ]; then
     exit 1
 fi
 
-# Preparing ./usr/local/spinware:
+# Preparing ./opt/spinware:
 
 make distclean 2>/dev/null
-mkdir -p ./usr/local/spinware
+mkdir -p ./opt/spinware
 qmake -o Makefile spinware.pro && make -j $(nproc)
-cp -p ./Icons/spinware.png ./usr/local/spinware/.
-cp -p ./spinware ./usr/local/spinware/.
-cp -p ./spinware.sh ./usr/local/spinware/.
+cp -p ./Icons/spinware.png ./opt/spinware/.
+cp -p ./spinware ./opt/spinware/.
+cp -p ./spinware.sh ./opt/spinware/.
 
 # Preparing Spinware-x.deb:
 
-mkdir -p spinware-debian/usr/local
+mkdir -p spinware-debian/opt
 cp -pr ./DEBIAN spinware-debian/.
-cp -r ./usr/local/spinware spinware-debian/usr/local/.
+cp -r ./opt/spinware spinware-debian/opt/.
 fakeroot dpkg-deb --build spinware-debian Spinware-2024.08.15_amd64.deb
-rm -fr ./usr
+rm -fr ./opt
 rm -fr spinware-debian
 make distclean
