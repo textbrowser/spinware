@@ -106,7 +106,7 @@ void spinware::closeEvent(QCloseEvent *event)
 
 	  mb.setIcon(QMessageBox::Question);
 	  mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-	  mb.setText(tr("One or more operations are active. "
+	  mb.setText(tr("An operation is active. "
 			"Are you sure that you wish to exit?"));
 	  mb.setWindowTitle(tr("spinware: Confirmation"));
 	  mb.setWindowModality(Qt::ApplicationModal);
@@ -131,8 +131,7 @@ void spinware::slotAbout(void)
 
   pixmap = pixmap.scaled
     (QSize(48, 48), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-  str = tr("Qt version %1.<br>"
-	   "spinware version %2, Guess Who.").
+  str = tr("Qt version %1.<br>spinware version %2, Guess Who.").
     arg(QT_VERSION_STR).arg(SPINWARE_VERSION_STR);
   mb.setIconPixmap(pixmap);
   mb.setStandardButtons(QMessageBox::Ok);
@@ -158,8 +157,7 @@ void spinware::slotCloseTab(int index)
 	  mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
 	  mb.setText(tr("An operation is active. Closing the page "
 			"may not cancel the current operation. "
-			"Are you sure that "
-			"you wish to continue?"));
+			"Are you sure that you wish to continue?"));
 	  mb.setWindowTitle(tr("spinware: Confirmation"));
 	  mb.setWindowModality(Qt::ApplicationModal);
 

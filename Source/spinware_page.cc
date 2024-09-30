@@ -255,8 +255,21 @@ void spinware_page::slotAbort(void)
     if(m_pid > 0)
       ::kill(static_cast<pid_t> (m_pid), SIGTERM);
 
-  m_future.cancel();
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+  QElapsedTimer t;
+
+  t.start();
+
+  do
+    {
+      m_future.cancel();
+      QApplication::processEvents();
+    }
+  while(m_future.isFinished() == false && t.elapsed() <= 5000);
+
   m_storeOperation = false;
+  QApplication::restoreOverrideCursor();
 }
 
 void spinware_page::slotColoredStatus(const QString &operation,
@@ -428,9 +441,9 @@ void spinware_page::slotHighlightPaths(void)
 
   for(int i = 0; i < list.size(); i++)
     {
-      QColor approved(144, 238, 144);
       QColor color;
-      QColor declined(240, 128, 128);
+      QColor const approved(144, 238, 144);
+      QColor const declined(240, 128, 128);
       QFileInfo const fileInfo(widgets.at(i)->text());
       QPalette palette;
 

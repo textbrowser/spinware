@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
   try
     {
-      new spinware();
+      spinware spinware;
       return qapplication.exec();
     }
   catch(const std::bad_alloc &exception)

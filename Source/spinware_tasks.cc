@@ -142,7 +142,8 @@ bool spinware_page::list(const QString &device,
 
   emit finished("list", true);
   emit status
-    ("list", tr("Content size... %1 MiB.").
+    ("list",
+     tr("Content size... %1 MiB.").
      arg(QString::number(static_cast<double> (content_size) /
 			 1048576.0, 'f', 1)));
   return true;
@@ -439,10 +440,12 @@ void spinware_page::slotOperation(void)
   if(command.isEmpty())
     {
       if(!m_future.isFinished())
-	QMessageBox::critical(this, tr("spinware: Error"),
+	QMessageBox::critical(this,
+			      tr("spinware: Error"),
 			      tr("An operation is in progress."));
       else
-	QMessageBox::critical(this, tr("spinware: Error"),
+	QMessageBox::critical(this,
+			      tr("spinware: Error"),
 			      tr("Please specify a command."));
 
       return;
