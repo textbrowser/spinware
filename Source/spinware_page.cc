@@ -282,11 +282,6 @@ void spinware_page::slotExport(void)
 {
   QFileDialog dialog(this);
 
-  if(m_ui.export_invoice == sender())
-    dialog.selectFile("spinware-list-export.txt");
-  else
-    dialog.selectFile("spinware-store-export.txt");
-
   dialog.setAcceptMode(QFileDialog::AcceptSave);
 #if QT_VERSION < 0x050000
   dialog.setDirectory
@@ -301,6 +296,11 @@ void spinware_page::slotExport(void)
 #else
   dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
 #endif
+
+  if(m_ui.export_invoice == sender())
+    dialog.selectFile("spinware-list-export.txt");
+  else
+    dialog.selectFile("spinware-store-export.txt");
 
   if(dialog.exec() == QDialog::Accepted)
     {
@@ -646,24 +646,19 @@ void spinware_page::slotSelectDirectory(void)
   if(m_ui.input_select == pushButton)
     {
       dialog.setDirectory(QDir::homePath());
+      dialog.setFileMode(QFileDialog::Directory);
       dialog.selectFile(m_ui.input->text());
     }
   else
     {
-      dialog.selectFile(m_ui.output->text());
+      dialog.setFileMode(QFileDialog::Directory);
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
       dialog.setConfirmOverwrite(true);
 #else
       dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
 #endif
-    }
-
-  if(m_ui.input_select == pushButton)
-    dialog.setFileMode(QFileDialog::Directory);
-  else
-    {
-      dialog.setFileMode(QFileDialog::Directory);
       dialog.setOption(QFileDialog::ShowDirsOnly, true);
+      dialog.selectFile(m_ui.output->text());
     }
 
   if(dialog.exec() == QDialog::Accepted)
@@ -686,13 +681,6 @@ void spinware_page::slotSelectExecutable(void)
 
   QFileDialog dialog(this);
 
-  if(m_ui.device_select == pushButton)
-    dialog.selectFile(m_ui.device->text());
-  else if(m_ui.mt_select == pushButton)
-    dialog.selectFile(m_ui.mt->text());
-  else
-    dialog.selectFile(m_ui.tar->text());
-
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
   dialog.setConfirmOverwrite(true);
   dialog.setFileMode(QFileDialog::ExistingFile);
@@ -700,6 +688,13 @@ void spinware_page::slotSelectExecutable(void)
   dialog.setFileMode(QFileDialog::ExistingFile);
   dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
 #endif
+
+  if(m_ui.device_select == pushButton)
+    dialog.selectFile(m_ui.device->text());
+  else if(m_ui.mt_select == pushButton)
+    dialog.selectFile(m_ui.mt->text());
+  else
+    dialog.selectFile(m_ui.tar->text());
 
   if(dialog.exec() == QDialog::Accepted)
     {
