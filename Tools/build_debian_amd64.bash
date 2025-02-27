@@ -24,7 +24,7 @@ fi
 
 make distclean 2>/dev/null
 mkdir -p ./opt/spinware
-qmake -o Makefile spinware.pro && make -j $(nproc)
+qmake && make -j $(nproc)
 cp -p ./Icons/spinware.png ./opt/spinware/.
 cp -p ./spinware ./opt/spinware/.
 cp -p ./spinware.sh ./opt/spinware/.
