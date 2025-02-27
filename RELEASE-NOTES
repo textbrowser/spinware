@@ -1,6 +1,9 @@
-2024.00.00
+2025.02.27
 
 1. Install in /opt/spinware instead of /usr/local/spinware.
+2. New icon sizes.
+3. Non-native dialogs.
+4. Replaced message dialogs with status bar text.
 
 2024.08.15
 

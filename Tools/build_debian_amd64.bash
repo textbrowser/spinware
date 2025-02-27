@@ -34,7 +34,7 @@ cp -p ./spinware.sh ./opt/spinware/.
 mkdir -p spinware-debian/opt
 cp -pr ./DEBIAN spinware-debian/.
 cp -r ./opt/spinware spinware-debian/opt/.
-fakeroot dpkg-deb --build spinware-debian Spinware-2024.08.15_amd64.deb
+fakeroot dpkg-deb --build spinware-debian Spinware-2025.02.27_amd64.deb
 rm -fr ./opt
 rm -fr spinware-debian
 make distclean
