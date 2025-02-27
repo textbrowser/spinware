@@ -50,6 +50,7 @@ class spinware: public QMainWindow
   void slotAbout(void);
   void slotCloseTab(int index);
   void slotCloseTab(void);
+  void slotError(const QString &error);
   void slotNewPage(void);
   void slotQuit(void);
 };

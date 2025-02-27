@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>800</height>
+    <width>1200</width>
+    <height>1000</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-184</y>
-        <width>1069</width>
-        <height>951</height>
+        <y>0</y>
+        <width>1188</width>
+        <height>988</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -64,8 +64,8 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>48</width>
-             <height>48</height>
+             <width>64</width>
+             <height>64</height>
             </size>
            </property>
            <property name="toolButtonStyle">
@@ -114,6 +114,9 @@
             <property name="text">
              <string>/dev/nst0</string>
             </property>
+            <property name="placeholderText">
+             <string>Device Location</string>
+            </property>
             <property name="clearButtonEnabled">
              <bool>true</bool>
             </property>
@@ -141,6 +144,9 @@
             <property name="text">
              <string>/bin/mt</string>
             </property>
+            <property name="placeholderText">
+             <string>MT Executable Absolute File Path</string>
+            </property>
             <property name="clearButtonEnabled">
              <bool>true</bool>
             </property>
@@ -167,6 +173,9 @@
            <widget class="QLineEdit" name="tar">
             <property name="text">
              <string>/bin/tar</string>
+            </property>
+            <property name="placeholderText">
+             <string>TAR Executable Absolute File Path</string>
             </property>
             <property name="clearButtonEnabled">
              <bool>true</bool>
@@ -253,8 +262,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -279,8 +288,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -305,8 +314,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -369,8 +378,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -395,8 +404,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -421,8 +430,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -447,8 +456,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -473,8 +482,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -499,8 +508,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -525,8 +534,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -551,8 +560,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -584,6 +593,9 @@
                <widget class="QLineEdit" name="operations_custom_command">
                 <property name="toolTip">
                  <string>Please press the Enter key to execute.</string>
+                </property>
+                <property name="placeholderText">
+                 <string>Custom Command</string>
                 </property>
                 <property name="clearButtonEnabled">
                  <bool>true</bool>
@@ -636,6 +648,9 @@
               </item>
               <item>
                <widget class="QLineEdit" name="output">
+                <property name="placeholderText">
+                 <string>Output Directory</string>
+                </property>
                 <property name="clearButtonEnabled">
                  <bool>true</bool>
                 </property>
@@ -728,8 +743,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -781,6 +796,9 @@
               </item>
               <item>
                <widget class="QLineEdit" name="input">
+                <property name="placeholderText">
+                 <string>Input Directory</string>
+                </property>
                 <property name="clearButtonEnabled">
                  <bool>true</bool>
                 </property>
@@ -926,8 +944,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">
@@ -952,8 +970,8 @@
                 </property>
                 <property name="iconSize">
                  <size>
-                  <width>24</width>
-                  <height>24</height>
+                  <width>32</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="toolButtonStyle">

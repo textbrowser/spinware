@@ -410,7 +410,7 @@ void spinware_page::slotList(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("spinware: Error"), error);
+    emit this->error(error);
 }
 
 void spinware_page::slotOperation(void)
@@ -440,13 +440,9 @@ void spinware_page::slotOperation(void)
   if(command.isEmpty())
     {
       if(!m_future.isFinished())
-	QMessageBox::critical(this,
-			      tr("spinware: Error"),
-			      tr("An operation is in progress."));
+	emit error(tr("An operation is in progress."));
       else
-	QMessageBox::critical(this,
-			      tr("spinware: Error"),
-			      tr("Please specify a command."));
+	emit error(tr("Please specify a command."));
 
       return;
     }
@@ -534,7 +530,7 @@ void spinware_page::slotOperation(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("spinware: Error"), error);
+    emit this->error(error);
 }
 
 bool spinware_page::write(const QString &device,

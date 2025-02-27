@@ -243,8 +243,8 @@ void spinware_page::slotAbort(void)
 
   mb.setIcon(QMessageBox::Question);
   mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-  mb.setText(tr("Are you sure that you wish to interrupt "
-		"the current operation?"));
+  mb.setText
+    (tr("Are you sure that you wish to interrupt the current operation?"));
   mb.setWindowTitle(tr("spinware: Confirmation"));
   mb.setWindowModality(Qt::ApplicationModal);
 
@@ -561,7 +561,7 @@ void spinware_page::slotRead(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("spinware: Error"), error);
+    emit this->error(error);
 }
 
 void spinware_page::slotSchedule(void)
@@ -630,7 +630,7 @@ void spinware_page::slotSchedule(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("spinware: Error"), error);
+    emit this->error(error);
 }
 
 void spinware_page::slotSelectDirectory(void)
@@ -785,5 +785,5 @@ void spinware_page::slotStore(void)
  done_label:
 
   if(!error.isEmpty())
-    QMessageBox::critical(this, tr("spinware: Error"), error);
+    emit this->error(error);
 }

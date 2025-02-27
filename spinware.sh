@@ -11,15 +11,14 @@ export QT_X11_NO_MITSHM=1
 if [ -r ./spinware ] && [ -x ./spinware ]
 then
     echo "Launching a local Spinware."
-    exec ./spinware
+    ./spinware
     exit $?
 fi
 
-if [ -r /opt/spinware/spinware ] &&
-   [ -x /opt/spinware/spinware ]
+if [ -r /opt/spinware/spinware ] && [ -x /opt/spinware/spinware ]
 then
     echo "Launching an official Spinware."
-    cd /opt/spinware && exec ./spinware
+    cd /opt/spinware && ./spinware
     exit $?
 else
     echo "Cannot locate Spinware."

@@ -20,7 +20,7 @@ then
     exit 1
 fi
 
-# Preparing ./opt/spinware:
+# Preparing ./opt/spinware.
 
 make distclean 2>/dev/null
 mkdir -p ./opt/spinware
@@ -29,7 +29,7 @@ cp -p ./Icons/spinware.png ./opt/spinware/.
 cp -p ./spinware ./opt/spinware/.
 cp -p ./spinware.sh ./opt/spinware/.
 
-# Preparing Spinware-x.deb:
+# Preparing Spinware-x.deb.
 
 mkdir -p spinware-debian/opt
 cp -pr ./DEBIAN spinware-debian/.

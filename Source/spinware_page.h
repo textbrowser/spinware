@@ -97,6 +97,7 @@ class spinware_page: public QWidget
  signals:
   void coloredStatus(const QString &operation,
 		     const QString &status);
+  void error(const QString &error);
   void finished(const QString &operation, const bool ok);
   void status(const QString &operation,
 	      const QString &status);

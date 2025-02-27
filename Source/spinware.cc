@@ -127,12 +127,12 @@ void spinware::slotAbout(void)
 {
   QMessageBox mb(this);
   QPixmap pixmap(":/spinware.png");
-  QString str("");
+  auto const str
+    (tr("Qt version %1.<br>spinware version %2, Guess Who.").
+     arg(QT_VERSION_STR).arg(SPINWARE_VERSION_STR));
 
   pixmap = pixmap.scaled
     (QSize(48, 48), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-  str = tr("Qt version %1.<br>spinware version %2, Guess Who.").
-    arg(QT_VERSION_STR).arg(SPINWARE_VERSION_STR);
   mb.setIconPixmap(pixmap);
   mb.setStandardButtons(QMessageBox::Ok);
   mb.setText(str);
@@ -174,16 +174,26 @@ void spinware::slotCloseTab(void)
   slotCloseTab(m_ui.tab->currentIndex());
 }
 
+void spinware::slotError(const QString &error)
+{
+  if(statusBar())
+    statusBar()->showMessage(error.trimmed(), 10000);
+}
+
 void spinware::slotNewPage(void)
 {
   auto page = new (std::nothrow) spinware_page(this);
 
   if(page)
-    m_ui.tab->addTab(page, QIcon(":/spinware.png"), tr("Page"));
+    {
+      connect(page,
+	      SIGNAL(error(const QString &)),
+	      this,
+	      SLOT(slotError(const QString &)));
+      m_ui.tab->addTab(page, QIcon(":/spinware.png"), tr("Page"));
+    }
   else
-    QMessageBox::critical(this,
-			  tr("spinware: Error"),
-			  tr("Memory failure."));
+    slotError(tr("Memory failure."));
 }
 
 void spinware::slotQuit(void)

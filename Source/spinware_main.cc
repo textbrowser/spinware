@@ -33,26 +33,19 @@
 
 int main(int argc, char *argv[])
 {
-#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
-  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-  QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-#endif
+  QCoreApplication::setAttribute(Qt::AA_DontUseNativeDialogs, true);
 
   QApplication qapplication(argc, argv);
 
   try
     {
       spinware spinware;
+
       return qapplication.exec();
     }
   catch(const std::bad_alloc &exception)
     {
-      std::cerr << QObject::tr("Memory allocation error at line ").
-	           toStdString()
-		<< __LINE__
-		<< QObject::tr(", file ").toStdString()
-		<< __FILE__
-		<< QObject::tr(".").toStdString()
+      std::cerr << QObject::tr("Spinware memory failure.").toStdString()
 		<< std::endl;
       exit(EXIT_FAILURE);
     }
