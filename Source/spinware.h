@@ -32,7 +32,7 @@
 
 #include "ui_spinware.h"
 
-#define SPINWARE_VERSION_STR "2025.02.27"
+#define SPINWARE_VERSION_STR "2025.02.28"
 
 class spinware: public QMainWindow
 {
