@@ -76,8 +76,7 @@ bool spinware_page::list(const QString &device,
     emit finished("list", true);
 
   if(compute_content_size)
-    emit status
-      ("list", tr("Computing content size of %1...").arg(device));
+    emit status("list", tr("Computing content size of %1...").arg(device));
   else
     emit status("list", tr("Listing %1...").arg(device));
 
