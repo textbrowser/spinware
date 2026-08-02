@@ -401,6 +401,7 @@ void spinware_page::slotFutureFinished(void)
 	  individual = m_ui.table->item(row, 1)->text().length() > 0;
 	  m_pid = 0;
 	  m_storeOperation = true;
+	  m_ui.store->clear();
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 	  m_future = QtConcurrent::run(this,
 				       &spinware_page::write,
@@ -539,6 +540,7 @@ void spinware_page::slotRead(void)
 
   m_pid = 0;
   m_storeOperation = false;
+  m_ui.retrieve->clear();
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   m_future = QtConcurrent::run(this,
 			       &spinware_page::read,

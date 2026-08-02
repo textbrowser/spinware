@@ -389,6 +389,7 @@ void spinware_page::slotList(void)
 
   m_pid = 0;
   m_storeOperation = false;
+  m_ui.list->clear();
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   m_future = QtConcurrent::run(this,
 			       &spinware_page::list,
@@ -511,6 +512,7 @@ void spinware_page::slotOperation(void)
 
   m_pid = 0;
   m_storeOperation = false;
+  m_ui.operation->clear();
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
   m_future = QtConcurrent::run(this,
 			       &spinware_page::operation,
