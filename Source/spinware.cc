@@ -128,7 +128,7 @@ void spinware::slotAbout(void)
   QMessageBox mb(this);
   QPixmap pixmap(":/spinware.png");
   auto const str
-    (tr("Qt version %1.<br>spinware version %2, Guess Who.").
+    (tr("Qt version %1.<br>spinware version %2, textbrowser.").
      arg(QT_VERSION_STR).arg(SPINWARE_VERSION_STR));
 
   pixmap = pixmap.scaled
