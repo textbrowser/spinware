@@ -1,6 +1,6 @@
 Qt LTS is supported.
 
-Debian may require tape group membership
+Debian may require tape group membership.
 
 > sudo usermod -aG tape account
 
