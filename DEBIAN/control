@@ -5,7 +5,7 @@ Depends: libqt5core5a,
 Maintainer: f83043e79dc03a0abfbcbc376879a97d66f2cacb@protonmail.ch
 Package: Spinware
 Priority: optional
-Section: Development
+Section: Utilities
 Version: 2025.02.28
 Description: Spinware
  Welcome to Spinware!
