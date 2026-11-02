@@ -3,6 +3,7 @@
 # Alexis Megas.
 
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export QT_STYLE_OVERRIDE=Fusion
 
 # Disable https://en.wikipedia.org/wiki/MIT-SHM.
 

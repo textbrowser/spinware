@@ -37,6 +37,10 @@ int main(int argc, char *argv[])
   QCoreApplication::setAttribute(Qt::AA_DontUseNativeDialogs, true);
 #endif
 
+#if defined(Q_OS_MACOS) || defined(Q_OS_WINDOWS)
+  qputenv("QT_STYLE_OVERRIDE", "Fusion");
+#endif
+
   QApplication qapplication(argc, argv);
 
   try
